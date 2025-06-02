@@ -1,0 +1,63 @@
+
+INSERT INTO clientes (cpf_cnpj, nome_cliente, endereco) VALUES
+('12345678901', 'Loja Solar', 'Rua São José, 123 - Centro, Criciúma/SC'),
+('98765432100', 'Maria Silva', 'Av. Centenário, 900 - Santa Bárbara, Criciúma/SC'),
+('11223344556', 'Escritório Alfa', 'Rua da Gávea, 55 - Pio Corrêa, Criciúma/SC'),
+('88997766544', 'Auto Peças Criciúma', 'Rua Henrique Lage, 780 - Comerciário, Criciúma/SC'),
+('55667788900', 'Condomínio Torres da Colina', 'Rua Araranguá, 50 - Centro, Criciúma/SC');
+
+
+INSERT INTO funcionarios (nome, cargo, email) VALUES
+('João Pedro Martins', 'Técnico de Impressoras', 'joao.martins@empresa.com'),
+('Camila Rocha', 'Assistente Comercial', 'camila.rocha@empresa.com'),
+('Carlos Henrique Souza', 'Supervisor Técnico', 'carlos.souza@empresa.com'),
+('Renata Lopes', 'Atendimento', 'renata.lopes@empresa.com'),
+('Eduardo Freitas', 'Instalador', 'edu.freitas@empresa.com');
+
+
+INSERT INTO fornecedores (nome, contato) VALUES
+('SC Impressoras LTDA', 'contato@scimpressoras.com.br'),
+('Tecnoprint Brasil', 'atendimento@tecnoprint.com.br'),
+('Sul Print Solutions', 'comercial@sulprint.com'),
+('CriciToner Distribuidora', 'vendas@cricitoner.com'),
+('InovaPrint Santa Catarina', 'sac@inovaprintsc.com.br');
+
+
+INSERT INTO impressoras (modelo, marca, status) VALUES
+('LaserJet M404n', 'HP', 'Disponível'),
+('EcoTank L3250', 'Epson', 'Alugada'),
+('WorkCentre 3345', 'Xerox', 'Em Manutenção'),
+('Brother HL-1212W', 'Brother', 'Disponível'),
+('Canon i-SENSYS LBP623Cdw', 'Canon', 'Alugada');
+
+
+INSERT INTO aluguel (cd_cliente, cd_impressora, data_inicio, data_fim) VALUES
+(1, 2, '2025-05-01', NULL),
+(2, 3, '2025-04-15', '2025-05-10'),
+(3, 5, '2025-03-10', NULL),
+(4, 1, '2025-01-01', '2025-04-01'),
+(5, 4, '2025-05-20', NULL);
+
+
+INSERT INTO manutencao (cd_impressora, cd_funcionario, data_manutencao, descricao) VALUES
+(3, 1, '2025-05-10', 'Troca de toner e limpeza interna'),
+(2, 1, '2025-04-01', 'Verificação de falha de alimentação de papel'),
+(5, 3, '2025-03-15', 'Atualização de firmware'),
+(3, 1, '2025-05-25', 'Substituição do fusor'),
+(4, 5, '2025-05-28', 'Instalação de driver remoto');
+
+
+INSERT INTO contrato (cd_cliente, data_assinatura, valor_total) VALUES
+(1, '2025-03-15', 2500.00),
+(2, '2025-04-10', 1800.00),
+(3, '2025-02-01', 1350.00),
+(4, '2025-01-10', 2100.00),
+(5, '2025-05-20', 1900.00);
+
+
+INSERT INTO log (cd_funcionario, acao, data_hora) VALUES
+(1, 'Manutenção na Xerox 3345', '2025-05-10 14:00:00'),
+(2, 'Assinatura de contrato com SATC', '2025-04-10 09:00:00'),
+(3, 'Verificação técnica impressora Epson', '2025-04-01 10:30:00'),
+(4, 'Atendimento a cliente Prefeitura Criciúma', '2025-05-15 11:00:00'),
+(5, 'Instalação remota da Canon', '2025-05-20 16:00:00');
