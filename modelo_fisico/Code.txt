@@ -1,0 +1,56 @@
+Table clientes {
+  cd_cliente int [pk, not null]
+  cpf_cnpj int [not null, unique]
+  nome_cliente varchar(100) [not null]
+  endereco varchar(200) [not null]
+}
+
+Table funcionarios {
+  cd_funcionario int [pk, not null]
+  nome varchar(100) [not null]
+  cargo varchar(50) [not null]
+  email varchar(35) [not null]
+}
+
+Table impressoras {
+  cd_impressora int [pk, not null]
+  modelo varchar(100) [not null]
+  marca varchar(50) [not null]
+  status varchar(20) [not null]
+}
+
+Table aluguel {
+  cd_aluguel int [pk, not null]
+  cd_cliente int [not null, ref: > clientes.cd_cliente]
+  cd_impressora int [not null, ref: > impressoras.cd_impressora]
+  data_inicio date [not null]
+  data_fim date
+}
+
+Table manutencao {
+  cd_manutencao int [pk, not null]
+  cd_impressora int [not null, ref: > impressoras.cd_impressora]
+  cd_funcionario int [ref: > funcionarios.cd_funcionario]
+  data_manutencao date [not null]
+  descricao varchar(200)
+}
+
+Table log {
+  cd_log int [pk, not null]
+  cd_funcionario int [ref: > funcionarios.cd_funcionario]
+  acao int
+  data_hora datetime [not null]
+}
+
+Table contrato {
+  cd_contrato int [pk, not null]
+  cd_cliente int [not null, ref: > clientes.cd_cliente]
+  data_assinatura date [not null]
+  valor_total decimal(10,2) [not null]
+}
+
+Table fornecedores {
+  cd_fornecedor int [pk, not null]
+  nome varchar(100) [not null]
+  contato varchar(100) [not null]
+}
