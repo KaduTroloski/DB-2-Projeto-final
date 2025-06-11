@@ -1,8 +1,8 @@
 
-## Projeto Sistema de Atividades Especiais - GRUPO A
+## Projeto Sistema de Atividades Especiais - GRUPO D
 
-Este projeto consiste na criação de um modelo físico de um banco de dados para um sistema XYZ.
-O projeto foi desenvolvido em C# .NET, criando um CRUD para cadastro dos itens xyz, onde a aplicacao faz conexão com o banco de dados através de uma biblioteca chamada entity framework e realiza operações de adição, aualização e deleção dos dados, usando todos os conceitos e dinâmicas práticas de SQL desenvolvidas em aula.
+Neste projeto iremos fazer um sistema de aluguel de equipamentos eletronicos.
+Este projeto foi desenvolvido com Typescript no back-end e Javascript no front-end, envolvendo um CRUD na tabela de Clientes, o back-end faz a conversão das tabelas do banco de dados para objetos typescript por meio da biblioteca prisma, e no front-end sera ussado a bilbioteca axios para o consumo do back-end.
 
 ### Integrantes
 Kauan Custodio Propodoski -KaduTroloski<br>
@@ -36,7 +36,7 @@ Abaixo, segue os scripts SQL separados por tipo:
 ## Front-End:
 - Linguagem de Programação Javascript.
 - Utilizando Node para a criação do ambiente.
-- Biblioteca ReactJS e Tailwind.
+- Biblioteca ReactJS, Tailwind e Axios.
 - Frameworks NextJS.
 
 ## Back-End:
