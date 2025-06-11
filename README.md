@@ -1,5 +1,5 @@
 
-## Projeto Sistema de Atividades Especiais - GRUPO D
+## Projeto Sistema de aluguel de equipamentos - GRUPO D
 
 Neste projeto iremos fazer um sistema de aluguel de equipamentos eletronicos.
 Este projeto foi desenvolvido com Typescript no back-end e Javascript no front-end, envolvendo um CRUD na tabela de Clientes, o back-end faz a conversão das tabelas do banco de dados para objetos typescript por meio da biblioteca prisma, e no front-end sera ussado a bilbioteca axios para o consumo do back-end.
