@@ -36,8 +36,7 @@ Abaixo, segue os scripts SQL separados por tipo:
 ## Front-End:
 - Linguagem de Programação Javascript.
 - Utilizando Node para a criação do ambiente.
-- Biblioteca ReactJS, Tailwind e Axios.
-- Frameworks NextJS.
+- Biblioteca ReactJS, React-Modal, Ant Design e Axios.
 
 ## Back-End:
 - Lingaguem de Programação Typescript.
@@ -47,8 +46,24 @@ Abaixo, segue os scripts SQL separados por tipo:
 
 ### Passos para execução do CRUD
 
-   
 [Codigo Fonte](crud/)
+
+#### Back-End
+
+---
+
+#### Front-end
+1. Requisitos:
+   - Node.js instalado
+   - NPM istalado
+2. Navegue até o diretório do front-end:  
+`cd ./crud/front-end/`
+3. Instale as dependências do projeto:  
+`npm install`
+4. Execute o projeto:  
+`npm run dev`
+5. Acesse o front-end no navegador:  
+O vite inicilizará o servidor de desenvolvimento e fornecerá um link, geralmente `http://localhost:5173/`.
 
 ### Relatório Final
 O relatório final está disponível no arquivo [relatorio-final/template1.docx](relatorio/template1.docx).

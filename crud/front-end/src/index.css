@@ -1,0 +1,81 @@
+/* Configurações gerais de tags padroes */
+
+body, html, #root {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  overflow: hidden;
+}
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #4A5568 #1E293B;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  border-radius: 10px;
+}
+
+/* Configurações de cores do projeto */
+
+.bg-background {
+  background-color: #020617;
+}
+.bg-surface {
+  background-color: #1e293b;
+}
+.bg-primary {
+  background-color: #2563eb;
+}
+.text-light {
+  color: #e2e8f0;
+}
+.text-dark {
+  color: #1e293b;
+}
+
+/* Classes principais */
+
+.background {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Aqui virou tailwind custom :sob: */
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.text-title {
+  font-size: 40px;
+  font-weight: 600;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.text-button {
+  font-size: 20px;
+  font-weight: 500;
+  padding: 10px;
+}
