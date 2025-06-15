@@ -1,0 +1,10 @@
+
+.surface {
+  height: 90%;
+  width: 80%;
+  border-radius: 10px;
+  padding: 20px;
+  gap: 50px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
