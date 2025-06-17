@@ -49,6 +49,13 @@ Abaixo, segue os scripts SQL separados por tipo:
 [Codigo Fonte](crud/)
 
 #### Back-End
+1. Requisitos:
+   - Docker instalado
+2. Navegue até o diretório do back-end:
+`cd ./crud/back-end/`
+3. Rode o comando para subir o container do banco de dados:
+`docker compose up -d`
+
 
 ---
 
