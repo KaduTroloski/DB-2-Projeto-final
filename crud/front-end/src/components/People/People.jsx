@@ -1,13 +1,29 @@
 import Surface from "../Surface/Surface.jsx";
 import DataTable from "../DataTable/DataTable.jsx";
+import Modal from "../Modal/modal.jsx";
+import { useState } from "react";
 
 export default function People() {
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedPerson, setSelectedPerson] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+
   const handleEdit = (record) => {
-    alert('Editar');
-  }
+    setSelectedPerson(record);
+    setIsEditing(true);
+    setOpenModal(true);
+  };
+
   const handleDelete = (record) => {
-    alert('Deletar');
-  }
+    alert(`Deletar ${record.nome_pessoa}`);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setSelectedPerson(null);
+    setIsEditing(false);
+  };
+
   const peopleData = [
     {
       cd_pessoa: 1,
@@ -22,7 +38,7 @@ export default function People() {
       bairro: "Centro",
       cidade: "São Paulo",
       estado: "SP",
-      cep: "01001000"
+      cep: "01001000",
     },
     {
       cd_pessoa: 2,
@@ -37,7 +53,7 @@ export default function People() {
       bairro: "Copacabana",
       cidade: "Rio de Janeiro",
       estado: "RJ",
-      cep: "22041001"
+      cep: "22041001",
     },
     {
       cd_pessoa: 3,
@@ -52,7 +68,7 @@ export default function People() {
       bairro: "Savassi",
       cidade: "Belo Horizonte",
       estado: "MG",
-      cep: "30130000"
+      cep: "30130000",
     },
     {
       cd_pessoa: 4,
@@ -67,7 +83,7 @@ export default function People() {
       bairro: "Centro",
       cidade: "Curitiba",
       estado: "PR",
-      cep: "80010000"
+      cep: "80010000",
     },
     {
       cd_pessoa: 5,
@@ -82,7 +98,7 @@ export default function People() {
       bairro: "Partenon",
       cidade: "Porto Alegre",
       estado: "RS",
-      cep: "90650001"
+      cep: "90650001",
     },
     {
       cd_pessoa: 6,
@@ -97,7 +113,7 @@ export default function People() {
       bairro: "Setor Oeste",
       cidade: "Goiânia",
       estado: "GO",
-      cep: "74110010"
+      cep: "74110010",
     },
     {
       cd_pessoa: 7,
@@ -112,7 +128,7 @@ export default function People() {
       bairro: "Barra",
       cidade: "Salvador",
       estado: "BA",
-      cep: "40140140"
+      cep: "40140140",
     },
     {
       cd_pessoa: 8,
@@ -127,7 +143,7 @@ export default function People() {
       bairro: "Centro",
       cidade: "João Pessoa",
       estado: "PB",
-      cep: "58013030"
+      cep: "58013030",
     },
     {
       cd_pessoa: 9,
@@ -142,7 +158,7 @@ export default function People() {
       bairro: "Praia de Iracema",
       cidade: "Fortaleza",
       estado: "CE",
-      cep: "60060000"
+      cep: "60060000",
     },
     {
       cd_pessoa: 10,
@@ -157,39 +173,38 @@ export default function People() {
       bairro: "Centro",
       cidade: "Florianópolis",
       estado: "SC",
-      cep: "88010000"
-    }
+      cep: "88010000",
+    },
   ];
 
   const columns = [
-    { title: 'Código', dataIndex: 'cd_pessoa', key: 'cd_pessoa' },
-    { title: 'CPF', dataIndex: 'cpf', key: 'cpf' },
-    { title: 'Nome', dataIndex: 'nome_pessoa', key: 'nome_pessoa' },
-    { title: 'Data de Nascimento', dataIndex: 'data_nascimento', key: 'data_nascimento' },
-    { title: 'Sexo', dataIndex: 'sexo', key: 'sexo' },
-    { title: 'Email', dataIndex: 'email', key: 'email' },
-    { title: 'Telefone', dataIndex: 'telefone', key: 'telefone' },
-    { title: 'Rua', dataIndex: 'rua', key: 'rua' },
-    { title: 'Número', dataIndex: 'numero', key: 'numero' },
-    { title: 'Bairro', dataIndex: 'bairro', key: 'bairro' },
-    { title: 'Cidade', dataIndex: 'cidade', key: 'cidade' },
-    { title: 'Estado', dataIndex: 'estado', key: 'estado' },
-    { title: 'CEP', dataIndex: 'cep', key: 'cep' },
+    { title: "Código", dataIndex: "cd_pessoa", key: "cd_pessoa" },
+    { title: "CPF", dataIndex: "cpf", key: "cpf" },
+    { title: "Nome", dataIndex: "nome_pessoa", key: "nome_pessoa" },
     {
-      title: 'Ações',
-      key: 'action',
+      title: "Data de Nascimento",
+      dataIndex: "data_nascimento",
+      key: "data_nascimento",
+    },
+    { title: "Sexo", dataIndex: "sexo", key: "sexo" },
+    { title: "Email", dataIndex: "email", key: "email" },
+    { title: "Telefone", dataIndex: "telefone", key: "telefone" },
+    { title: "Rua", dataIndex: "rua", key: "rua" },
+    { title: "Número", dataIndex: "numero", key: "numero" },
+    { title: "Bairro", dataIndex: "bairro", key: "bairro" },
+    { title: "Cidade", dataIndex: "cidade", key: "cidade" },
+    { title: "Estado", dataIndex: "estado", key: "estado" },
+    { title: "CEP", dataIndex: "cep", key: "cep" },
+    {
+      title: "Ações",
+      key: "action",
       render: (_, record) => (
-        <div>
-          <button
-            className={'text-light'}
-            onClick={() => handleEdit(record)}
-          >
+        <div className="flex gap-2">
+          {" "}
+          <button className={"text-light"} onClick={() => handleEdit(record)}>
             Editar
           </button>
-          <button
-            className={'text-light'}
-            onClick={() => handleDelete(record)}
-          >
+          <button className={"text-light"} onClick={() => handleDelete(record)}>
             Deletar
           </button>
         </div>
@@ -199,18 +214,231 @@ export default function People() {
 
   return (
     <Surface>
-      <header className={'flex flex-row justify-between'}>
-        <span className={'text-title'}>
-          Dados de Pessoas
-        </span>
-        <button className={'bg-primary text-light text-button'}>
+      <header className={"flex flex-row justify-between"}>
+        <span className={"text-title"}>Dados de Pessoas</span>
+        <button
+          className={"bg-primary text-light text-button"}
+          onClick={() => {
+            setSelectedPerson(null);
+            setIsEditing(false);
+            setOpenModal(true);
+          }}
+        >
           + Adicionar Pessoa
         </button>
       </header>
 
       <div>
-        <DataTable height={600} identifier={'cd_pessoa'} columns={columns} dataSource={peopleData}/>
+        <DataTable
+          height={600}
+          identifier={"cd_pessoa"}
+          columns={columns}
+          dataSource={peopleData}
+        />
       </div>
+      <Modal
+        isOpen={openModal}
+        onClose={handleCloseModal}
+        personData={selectedPerson}
+        isEditing={isEditing}
+      >
+        {isEditing ? (
+          <h2 className="text-xl font-bold mb-4">
+            Editar {selectedPerson?.nome_pessoa}
+          </h2>
+        ) : (
+          <h2 className="text-xl font-bold mb-4">Adicionar Nova Pessoa</h2>
+        )}
+
+        {isEditing && selectedPerson ? (
+          <form className="space-y-4">
+            <div>
+              <label htmlFor="cd_pessoa">Código:</label>
+              <input
+                type="text"
+                id="cd_pessoa"
+                name="cd_pessoa"
+                defaultValue={selectedPerson.cd_pessoa}
+                readOnly
+              />
+            </div>
+            <div>
+              <label htmlFor="cpf">CPF:</label>
+              <input
+                type="text"
+                id="cpf"
+                name="cpf"
+                defaultValue={selectedPerson.cpf}
+              />
+            </div>
+            <div>
+              <label htmlFor="nome_pessoa">Nome:</label>
+              <input
+                type="text"
+                id="nome_pessoa"
+                name="nome_pessoa"
+                defaultValue={selectedPerson.nome_pessoa}
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="data_nascimento"
+                className="block text-light text-sm font-bold mb-2"
+              >
+                Data de Nascimento:
+              </label>
+              <input
+                type="date"
+                id="data_nascimento"
+                name="data_nascimento"
+                defaultValue={selectedPerson.data_nascimento}
+              />
+            </div>
+            <div>
+              <label htmlFor="sexo">Sexo:</label>
+              <select id="sexo" name="sexo" defaultValue={selectedPerson.sexo}>
+                <option value="M">Masculino</option>
+                <option value="F">Feminino</option>
+              </select>
+            </div>
+            <div>
+              <label htmlFor="email">Email:</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                defaultValue={selectedPerson.email}
+              />
+            </div>
+            <div>
+              <label htmlFor="telefone">Telefone:</label>
+              <input
+                type="tel"
+                id="telefone"
+                name="telefone"
+                defaultValue={selectedPerson.telefone}
+              />
+            </div>
+            <div>
+              <label htmlFor="rua">Rua:</label>
+              <input
+                type="text"
+                id="rua"
+                name="rua"
+                defaultValue={selectedPerson.rua}
+              />
+            </div>
+            <div>
+              <label htmlFor="numero">Número:</label>
+              <input
+                type="number"
+                id="numero"
+                name="numero"
+                defaultValue={selectedPerson.numero}
+              />
+            </div>
+            <div>
+              <label htmlFor="bairro">Bairro:</label>
+              <input
+                type="text"
+                id="bairro"
+                name="bairro"
+                defaultValue={selectedPerson.bairro}
+              />
+            </div>
+            <div>
+              <label htmlFor="cidade">Cidade:</label>
+              <input
+                type="text"
+                id="cidade"
+                name="cidade"
+                defaultValue={selectedPerson.cidade}
+                className="bg-background"
+              />
+            </div>
+            <div>
+              <label htmlFor="estado">Estado:</label>
+              <input
+                type="text"
+                id="estado"
+                name="estado"
+                defaultValue={selectedPerson.estado}
+              />
+            </div>
+            <div>
+              <label htmlFor="cep">CEP:</label>
+              <input
+                type="text"
+                id="cep"
+                name="cep"
+                defaultValue={selectedPerson.cep}
+              />
+            </div>
+          </form>
+        ) : (
+          <form className="space-y-4">
+            <div>
+              <label htmlFor="new_cpf">CPF:</label>
+              <input type="text" id="new_cpf" name="new_cpf" />
+            </div>
+            <div>
+              <label htmlFor="new_nome_pessoa">Nome:</label>
+              <input type="text" id="new_nome_pessoa" name="new_nome_pessoa" />
+            </div>
+            <div>
+              <label htmlFor="new_data_nascimento">Data de Nascimento:</label>
+              <input
+                type="date"
+                id="new_data_nascimento"
+                name="new_data_nascimento"
+              />
+            </div>
+            <div>
+              <label htmlFor="new_sexo">Sexo:</label>
+              <select id="new_sexo" name="new_sexo">
+                <option value="">Selecione</option>
+                <option value="M">Masculino</option>
+                <option value="F">Feminino</option>
+                <option value="O">Outro</option>
+              </select>
+            </div>
+            <div>
+              <label htmlFor="new_email">Email:</label>
+              <input type="email" id="new_email" name="new_email" />
+            </div>
+            <div>
+              <label htmlFor="new_telefone">Telefone:</label>
+              <input type="tel" id="new_telefone" name="new_telefone" />
+            </div>
+            <div>
+              <label htmlFor="new_rua">Rua:</label>
+              <input type="text" id="new_rua" name="new_rua" />
+            </div>
+            <div>
+              <label htmlFor="new_numero">Número:</label>
+              <input type="number" id="new_numero" name="new_numero" />
+            </div>
+            <div>
+              <label htmlFor="new_bairro">Bairro:</label>
+              <input type="text" id="new_bairro" name="new_bairro" />
+            </div>
+            <div>
+              <label htmlFor="new_cidade">Cidade:</label>
+              <input type="text" id="new_cidade" name="new_cidade" />
+            </div>
+            <div>
+              <label htmlFor="new_estado">Estado:</label>
+              <input type="text" id="new_estado" name="new_estado" />
+            </div>
+            <div>
+              <label htmlFor="new_cep">CEP:</label>
+              <input type="text" id="new_cep" name="new_cep" />
+            </div>
+          </form>
+        )}
+
+        <button onClick={handleCloseModal}>Fechar</button>
+      </Modal>
     </Surface>
-  )
+  );
 }
