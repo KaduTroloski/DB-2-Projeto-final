@@ -1,6 +1,9 @@
 version: '3.8'
 
 services:
+  sqlserverdata:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    entrypoint: /bin/bash
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: sql_server
@@ -9,8 +12,14 @@ services:
     environment:
       SA_PASSWORD: "Password123!"
       ACCEPT_EULA: "Y"
-    volumes:
-      - sqlserverdata:/var/opt/mssql
+    volumes:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
 
-volumes:
-  sqlserverdata:
+      - /var/opt/mssql
+   
+      - ./:/usr/src/app 
+   
+    working_dir: /usr/src/app 
+
+    command: sh -c ' chmod +x ./entrypoint.sh; ./entrypoint.sh & /opt/mssql/bin/sqlservr;'
+    volumes_from:
+      - sqlserverdata

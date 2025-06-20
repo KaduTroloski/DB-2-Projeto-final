@@ -1,6 +1,6 @@
-create database Projeto;
+create database Projeto
 GO 
-USE Projeto;
+USE Projeto
 
 CREATE TABLE pessoas
 (
