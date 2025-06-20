@@ -1,4 +1,117 @@
 datasource db {
-     provider = "sqlserver"
-     url      = env("DATABASE_URL")
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model cargos {
+  cd_cargo     Int            @id(map: "PK__cargos__00BD37AAAAA7E21C")
+  nome_cargo   String         @db.VarChar(20)
+  funcionarios funcionarios[]
+}
+
+model contratos {
+  cd_contrato    Int          @id(map: "PK__contrato__7BA04FCDB38C47BA")
+  data_inicio    DateTime     @db.Date
+  data_fim       DateTime?    @db.Date
+  data_vigencia  DateTime     @db.Date
+  valor_contrato Decimal?     @db.Decimal(10, 2)
+  cd_cliente     Int
+  cd_produto     Int
+  cd_vendedor    Int
+  pessoas        pessoas      @relation(fields: [cd_cliente], references: [cd_pessoa], onUpdate: NoAction, map: "FK__contratos__cd_cl__7FEAFD3E")
+  produtos       produtos     @relation(fields: [cd_produto], references: [cd_produto], onUpdate: NoAction, map: "FK__contratos__cd_pr__00DF2177")
+  funcionarios   funcionarios @relation(fields: [cd_vendedor], references: [cd_funcionario], onUpdate: NoAction, map: "FK__contratos__cd_ve__01D345B0")
+}
+
+model fornecedores {
+  cd_fornecedor Int        @id(map: "PK__forneced__F62AF30DEA94FCCF")
+  razao_social  String?    @db.VarChar(100)
+  cnpj          String     @unique(map: "UQ__forneced__35BD3E484CD82290") @db.VarChar(14)
+  telefone      String?    @db.Char(11)
+  rua           String     @db.VarChar(100)
+  numero        Int        @db.SmallInt
+  bairro        String     @db.VarChar(50)
+  cidade        String     @db.VarChar(50)
+  estado        String     @db.Char(2)
+  cep           String     @db.Char(8)
+  produtos      produtos[]
+}
+
+model funcionarios {
+  cd_funcionario Int           @id(map: "PK__funciona__8A599F2A0CD6C66D")
+  cd_pessoa      Int
+  cd_cargo       Int
+  contratos      contratos[]
+  cargos         cargos        @relation(fields: [cd_cargo], references: [cd_cargo], onUpdate: NoAction, map: "FK__funcionar__cd_ca__74794A92")
+  pessoas        pessoas       @relation(fields: [cd_pessoa], references: [cd_pessoa], onUpdate: NoAction, map: "FK__funcionar__cd_pe__73852659")
+  manutencoes    manutencoes[]
+}
+
+model log_pessoa {
+  cd_log    Int      @id(map: "PK__log_pess__BAC211CD10DA0EE2")
+  usuario   String?  @db.VarChar(100)
+  acao      String?  @db.Char(1)
+  descricao String?  @db.VarChar(255)
+  data_hora DateTime @db.DateTime
+}
+
+model manutencoes {
+  cd_manutencao   Int          @id(map: "PK__manutenc__F2B8C5A000224D9E")
+  cd_tecnico      Int
+  cd_produto      Int
+  data_manutencao DateTime     @db.Date
+  descricao       String?      @db.VarChar(200)
+  produtos        produtos     @relation(fields: [cd_produto], references: [cd_produto], onUpdate: NoAction, map: "FK__manutenco__cd_pr__7D0E9093")
+  funcionarios    funcionarios @relation(fields: [cd_tecnico], references: [cd_funcionario], onUpdate: NoAction, map: "FK__manutenco__cd_te__7C1A6C5A")
+}
+
+model marcas {
+  cd_marca   Int       @id(map: "PK__marcas__844C783C60F41CFB")
+  nome_marca String    @db.VarChar(50)
+  modelos    modelos[]
+}
+
+model modelos {
+  cd_modelo   Int        @id(map: "PK__modelos__0BE8C3AB42C0D151")
+  nome_modelo String?    @db.VarChar(50)
+  ano_modelo  Int?       @db.SmallInt
+  cd_marca    Int
+  marcas      marcas     @relation(fields: [cd_marca], references: [cd_marca], onUpdate: NoAction, map: "FK__modelos__cd_marc__70A8B9AE")
+  produtos    produtos[]
+}
+
+model pessoas {
+  cd_pessoa       Int            @id(map: "PK__pessoas__37A9313385CE3AD3")
+  cpf             String         @unique(map: "UQ__pessoas__D836E71FC8CDF3FC") @db.Char(11)
+  nome_pessoa     String         @unique(map: "UQ__pessoas__BA250DE21974B14B") @db.VarChar(100)
+  data_nascimento DateTime       @db.Date
+  sexo            String         @db.Char(1)
+  email           String         @db.VarChar(35)
+  telefone        String         @db.Char(11)
+  rua             String         @db.VarChar(100)
+  numero          Int            @db.SmallInt
+  bairro          String         @db.VarChar(50)
+  cidade          String         @db.VarChar(50)
+  estado          String         @db.Char(2)
+  cep             String         @db.Char(8)
+  contratos       contratos[]
+  funcionarios    funcionarios[]
+}
+
+model produtos {
+  cd_produto    Int           @id(map: "PK__produtos__5D5AA9F3D81D0FA9")
+  cd_status     Int
+  cd_fornecedor Int
+  cd_modelo     Int
+  contratos     contratos[]
+  manutencoes   manutencoes[]
+  fornecedores  fornecedores  @relation(fields: [cd_fornecedor], references: [cd_fornecedor], onUpdate: NoAction, map: "FK__produtos__cd_for__7849DB76")
+  modelos       modelos       @relation(fields: [cd_modelo], references: [cd_modelo], onUpdate: NoAction, map: "FK__produtos__cd_mod__793DFFAF")
+  status        status        @relation(fields: [cd_status], references: [cd_status], onUpdate: NoAction, map: "FK__produtos__cd_sta__7755B73D")
+}
+
+model status {
+  cd_status   Int        @id(map: "PK__status__8FE978D2957600CC")
+  nome_status String     @db.VarChar(20)
+  produtos    produtos[]
 }
