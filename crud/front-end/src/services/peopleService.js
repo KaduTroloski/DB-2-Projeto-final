@@ -1,31 +1,33 @@
 import axios from "axios";
 
-const getPeople = async () => {
-  const response = await axios.get('http://localhost:3000/pessoas');
+const baseURL = 'http://localhost:3001/';
+
+export const getPeople = async () => {
+  const response = await axios.get(baseURL + 'pessoas');
   if (response.status !== 200) {
     throw new Error(`Erro buscando pessoas: ${response.statusText}`);
   }
-  return response.data;
+  return response.data
 }
 
-const createPerson = async (person) => {
-  const response = await axios.post('http://localhost:3000/pessoas', person);
+export const createPerson = async (person) => {
+  const response = await axios.post(baseURL + 'pessoas', person);
   if (response.status !== 201) {
     throw new Error(`Erro ao criar pessoa: ${response.statusText}`);
   }
   return response.data;
 }
 
-const editPerson = async (id) => {
-  const response = await axios.put(`http://localhost:3000/pessoas/${id}`);
+export const editPerson = async (id) => {
+  const response = await axios.put(baseURL + `pessoas/${id}`);
   if (response.status !== 204) {
     throw new Error(`Erro ao editar pessoa ${id}: ${response.statusText}`);
   }
   return response.data;
 }
 
-const deletePerson = async (id) => {
-  const response = await axios.delete(`http://localhost:3000/pessoas/${id}`);
+export const deletePerson = async (id) => {
+  const response = await axios.delete(baseURL + `pessoas/${id}`);
   if (response.status !== 204) {
     throw new Error(`Erro ao deletar pessoa ${id}: ${response.statusText}`);
   }
