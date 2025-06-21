@@ -1,5 +1,6 @@
 import express from 'express'
 import { Request, Response, NextFunction } from 'express';
+import router from './pessoaRouter';
 
 const app = express();
 app.use(express.urlencoded({extended: false}))
@@ -9,6 +10,8 @@ interface errorType{
         message: string
         status: number
 }
+
+app.use('/pessoas', router)
 
 
 app.use((req: Request, res: Response, next: NextFunction) => {

@@ -1,9 +1,15 @@
-IF NOT EXISTS(select name from sys.databases WHERE name = 'Projeto')
-BEGIN
-create database Projeto
-GO 
-USE Projeto
 
+IF NOT EXISTS(SELECT name FROM sys.databases WHERE name = 'Projeto')
+BEGIN
+    CREATE DATABASE Projeto;
+END;
+GO
+
+USE Projeto;
+GO
+
+IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'pessoas')
+BEGIN
 CREATE TABLE pessoas
 (
     cd_pessoa       INT PRIMARY KEY     NOT NULL,
@@ -20,8 +26,11 @@ CREATE TABLE pessoas
     estado          CHAR(2)             NOT NULL,
     cep             CHAR(8)             NOT NULL
 );
+END;
 GO
 
+IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'fornecedores')
+BEGIN
 CREATE TABLE fornecedores
 (
     cd_fornecedor INT PRIMARY KEY    NOT NULL,
@@ -35,29 +44,42 @@ CREATE TABLE fornecedores
     estado        CHAR(2)            NOT NULL,
     cep           CHAR(8)            NOT NULL
 );
+END;
 GO
 
+IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'marcas')
+BEGIN
 CREATE TABLE marcas
 (
     cd_marca   INT PRIMARY KEY NOT NULL,
     nome_marca VARCHAR(50)     NOT NULL
 );
+END;
 GO
 
+IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'status')
+BEGIN
 CREATE TABLE status
 (
     cd_status   INT PRIMARY KEY NOT NULL,
     nome_status VARCHAR(20)     NOT NULL
 );
+END;
 GO
 
+
+IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'cargos')
+BEGIN
 CREATE TABLE cargos
 (
     cd_cargo   INT PRIMARY KEY NOT NULL,
     nome_cargo VARCHAR(20)     NOT NULL
 );
+END;
 GO
 
+IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'log_pessoa')
+BEGIN
 CREATE TABLE log_pessoa
 (
     cd_log    INT PRIMARY KEY NOT NULL,
@@ -66,8 +88,11 @@ CREATE TABLE log_pessoa
     descricao VARCHAR(255),
     data_hora DATETIME        NOT NULL
 );
+END;
 GO
 
+IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'modelo')
+BEGIN
 CREATE TABLE modelos
 (
     cd_modelo   INT PRIMARY KEY NOT NULL,
@@ -76,8 +101,11 @@ CREATE TABLE modelos
     cd_marca    INT             NOT NULL,
     FOREIGN KEY (cd_marca) REFERENCES marcas (cd_marca)
 );
+END;
 GO
 
+IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'funcionarios')
+BEGIN
 CREATE TABLE funcionarios
 (
     cd_funcionario INT PRIMARY KEY NOT NULL,
@@ -86,8 +114,11 @@ CREATE TABLE funcionarios
     FOREIGN KEY (cd_pessoa) REFERENCES pessoas (cd_pessoa),
     FOREIGN KEY (cd_cargo) REFERENCES cargos (cd_cargo)
 );
+END;
 GO
 
+IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'produtos')
+BEGIN
 CREATE TABLE produtos
 (
     cd_produto    INT PRIMARY KEY NOT NULL,
@@ -98,8 +129,11 @@ CREATE TABLE produtos
     FOREIGN KEY (cd_fornecedor) REFERENCES fornecedores (cd_fornecedor),
     FOREIGN KEY (cd_modelo) REFERENCES modelos (cd_modelo)
 );
+END;
 GO
 
+IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'manutencoes')
+BEGIN
 CREATE TABLE manutencoes
 (
     cd_manutencao   INT PRIMARY KEY NOT NULL,
@@ -110,8 +144,11 @@ CREATE TABLE manutencoes
     FOREIGN KEY (cd_tecnico) REFERENCES funcionarios (cd_funcionario),
     FOREIGN KEY (cd_produto) REFERENCES produtos (cd_produto)
 );
+END;
 GO
 
+IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'contratos')
+BEGIN
 CREATE TABLE contratos
 (
     cd_contrato    INT PRIMARY KEY NOT NULL,
@@ -126,10 +163,8 @@ CREATE TABLE contratos
     FOREIGN KEY (cd_produto) REFERENCES produtos (cd_produto),
     FOREIGN KEY (cd_vendedor) REFERENCES funcionarios (cd_funcionario)
 );
-GO
 END;
-
-USE Projeto
+GO
 
 IF NOT EXISTS(SELECT 1 FROM log_pessoa)
 BEGIN
@@ -145,6 +180,7 @@ INSERT INTO log_pessoa (cd_log, usuario, acao, descricao, data_hora) VALUES
 (9, 'biancada-conceicao', 'U', 'Laborum consequuntur facilis iste.', '2024-12-13 10:29:22'),
 (10, 'leticiacostela', 'U', 'Eaque perspiciatis iusto itaque consequuntur.', '2024-01-05 18:04:54');
 END;
+GO 
 
 IF NOT EXISTS(SELECT 1 FROM pessoas)
 BEGIN
@@ -170,6 +206,7 @@ INSERT INTO pessoas (cd_pessoa, cpf, nome_pessoa, data_nascimento, sexo, email, 
 (19, '42305687117', 'Sr. Vitor Hugo Rezende', '2000-12-09', 'F', 'clima@uol.com.br', '95183464005', 'Vereda Yuri Duarte', 7486, 'Conjunto Santa Maria', 'Peixoto de Minas', 'GO', '66130546'),
 (20, '89714306566', 'Maysa Jesus', '1967-12-01', 'M', 'enzo22@sales.com', '03008550524', 'Setor de Barros', 6642, 'Santa Maria', 'Araujo', 'RS', '06662529');
 END;
+GO
 
 IF NOT EXISTS(SELECT 1 FROM cargos)
 BEGIN
@@ -177,6 +214,7 @@ INSERT INTO cargos (cd_cargo, nome_cargo) VALUES
 (1, 'Tecnico'),
 (2, 'Vendedor');
 END;
+GO
 
 IF NOT EXISTS(SELECT 1 FROM funcionarios)
 BEGIN
@@ -192,6 +230,7 @@ INSERT INTO funcionarios (cd_funcionario, cd_pessoa, cd_cargo) VALUES
 (9, 5, 1),
 (10, 6, 1);
 END;
+GO
 
 IF NOT EXISTS(SELECT 1 FROM fornecedores)
 BEGIN
@@ -217,6 +256,7 @@ INSERT INTO fornecedores (cd_fornecedor, razao_social, cnpj, telefone, rua, nume
 (19, 'Cunha Aragao e Filhos', '59180672000179', '51998927096', 'Favela de Barros', 1682, 'Monsenhor Messias', 'Freitas', 'MA', '00467081'),
 (20, 'Viana e Filhos', '07695432000103', '81990170275', 'Area Sophia Azevedo', 1142, 'Lindeia', 'Mendes', 'SE', '21044883');
 END;
+GO
 
 IF NOT EXISTS(SELECT 1 FROM marcas)
 BEGIN
@@ -232,6 +272,7 @@ INSERT INTO marcas (cd_marca, nome_marca) VALUES
 (9, 'Panasonic'),
 (10, 'Asus');
 END;
+GO
 
 IF NOT EXISTS(SELECT 1 FROM modelos)
 BEGIN
@@ -257,6 +298,7 @@ INSERT INTO modelos (cd_modelo, nome_modelo, ano_modelo, cd_marca) VALUES
 (19, 'Canon B2 sheetfed inkjet press', 2024,4),
 (20, 'Impressora Samsung M3325ND', 2019, 1);
 END;
+GO
 
 IF NOT EXISTS(SELECT 1 FROM status)
 BEGIN
@@ -266,6 +308,7 @@ INSERT INTO status (cd_status, nome_status) VALUES
 (3, 'Alocada'),
 (4, 'Desativada');
 END;
+GO
 
 IF NOT EXISTS(SELECT 1 FROM produtos)
 BEGIN
@@ -281,6 +324,7 @@ INSERT INTO produtos (cd_produto, cd_status, cd_fornecedor, cd_modelo) VALUES
 (9, 3, 9, 4),
 (10, 3, 18, 1);
 END;
+GO
 
 IF NOT EXISTS(SELECT 1 FROM contratos)
 BEGIN
@@ -306,6 +350,7 @@ INSERT INTO contratos (cd_contrato, data_inicio, data_fim, data_vigencia, valor_
 (19, '2023-03-06', '2023-10-19', '2023-03-21', 11582.14, 8, 9, 10),
 (20, '2023-06-22', '2023-08-24', '2023-07-03', 12109.24, 14, 3, 3);
 END;
+GO
 
 IF NOT EXISTS(SELECT 1 FROM manutencoes)
 BEGIN
@@ -331,6 +376,7 @@ INSERT INTO manutencoes (cd_manutencao, cd_tecnico, cd_produto, data_manutencao,
 (19, 4, 2, '2025-04-27', 'Troca de filtro.'),
 (20, 4, 1, '2025-04-30', 'Teste de funcionalidade total.');
 END;
+GO
 
 
 
