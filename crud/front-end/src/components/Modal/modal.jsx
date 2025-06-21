@@ -4,9 +4,7 @@ import "./modal.css";
 export default function Modal({
   isOpen,
   children,
-  onClose,
-  personData,
-  isEditing,
+  onClose
 }) {
   if (!isOpen) {
     return null;

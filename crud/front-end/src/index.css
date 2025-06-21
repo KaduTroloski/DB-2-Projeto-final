@@ -53,6 +53,10 @@ button {
 
 /* Aqui virou tailwind custom :sob: */
 
+.gap-16 {
+  gap: 16px;
+}
+
 .flex {
   display: flex;
 }
