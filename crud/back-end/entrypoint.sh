@@ -1,4 +1,4 @@
-wait_time=15s
+wait_time=45s
 password=Password123!
 
 echo importing data will start in $wait_time...
