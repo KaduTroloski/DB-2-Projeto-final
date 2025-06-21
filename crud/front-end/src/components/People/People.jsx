@@ -2,24 +2,30 @@ import Surface from "../Surface/Surface.jsx";
 import DataTable from "../DataTable/DataTable.jsx";
 import Modal from "../Modal/modal.jsx";
 import { useState } from "react";
+import {Image} from "antd";
+import PeopleForm from "./PeopleForm/PeopleForm.jsx";
+import DeleteModalContent from "./DeleteModalContent/DeleteModalContent.jsx";
 
 export default function People() {
-  const [openModal, setOpenModal] = useState(false);
+  const [openFormModal, setOpenFormModal] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [selectedPerson, setSelectedPerson] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
-  const handleEdit = (record) => {
+  const handleOpenEdit = (record) => {
     setSelectedPerson(record);
     setIsEditing(true);
-    setOpenModal(true);
+    setOpenFormModal(true);
   };
 
-  const handleDelete = (record) => {
-    alert(`Deletar ${record.nome_pessoa}`);
+  const handleOpenDelete = (record) => {
+    setSelectedPerson(record)
+    setOpenDeleteModal(true);
   };
 
   const handleCloseModal = () => {
-    setOpenModal(false);
+    setOpenFormModal(false);
+    setOpenDeleteModal(false);
     setSelectedPerson(null);
     setIsEditing(false);
   };
@@ -178,34 +184,33 @@ export default function People() {
   ];
 
   const columns = [
-    { title: "Código", dataIndex: "cd_pessoa", key: "cd_pessoa" },
-    { title: "CPF", dataIndex: "cpf", key: "cpf" },
-    { title: "Nome", dataIndex: "nome_pessoa", key: "nome_pessoa" },
-    {
-      title: "Data de Nascimento",
-      dataIndex: "data_nascimento",
-      key: "data_nascimento",
+    { title: "CPF", dataIndex: "cpf", key: "cpf", width: "10%",
+      render: (cpf) => {
+        if (!cpf) return "";
+        return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+      }
     },
-    { title: "Sexo", dataIndex: "sexo", key: "sexo" },
+    { title: "Nome", dataIndex: "nome_pessoa", key: "nome_pessoa" },
+    { title: "Data de Nascimento", dataIndex: "data_nascimento", key: "data_nascimento" },
+    { title: "Sexo", dataIndex: "sexo", key: "sexo", width: "5%" },
     { title: "Email", dataIndex: "email", key: "email" },
     { title: "Telefone", dataIndex: "telefone", key: "telefone" },
     { title: "Rua", dataIndex: "rua", key: "rua" },
     { title: "Número", dataIndex: "numero", key: "numero" },
     { title: "Bairro", dataIndex: "bairro", key: "bairro" },
     { title: "Cidade", dataIndex: "cidade", key: "cidade" },
-    { title: "Estado", dataIndex: "estado", key: "estado" },
-    { title: "CEP", dataIndex: "cep", key: "cep" },
+    { title: "Estado", dataIndex: "estado", key: "estado", width: "5%" },
+    { title: "CEP", dataIndex: "cep", key: "cep", width: "7%"},
     {
       title: "Ações",
       key: "action",
       render: (_, record) => (
         <div className="flex gap-2">
-          {" "}
-          <button className={"text-light"} onClick={() => handleEdit(record)}>
-            Editar
+          <button className={"text-light"} onClick={() => handleOpenEdit(record)}>
+            <Image src='/edit.png' alt='Editar' width={30} height={30} preview={false}/>
           </button>
-          <button className={"text-light"} onClick={() => handleDelete(record)}>
-            Deletar
+          <button className={"text-light"} onClick={() => handleOpenDelete(record)}>
+            <Image src='/trash.png' alt='Editar' width={25} height={25} preview={false}/>
           </button>
         </div>
       ),
@@ -221,7 +226,7 @@ export default function People() {
           onClick={() => {
             setSelectedPerson(null);
             setIsEditing(false);
-            setOpenModal(true);
+            setOpenFormModal(true);
           }}
         >
           + Adicionar Pessoa
@@ -237,208 +242,19 @@ export default function People() {
         />
       </div>
       <Modal
-        isOpen={openModal}
+        isOpen={openFormModal}
         onClose={handleCloseModal}
-        personData={selectedPerson}
-        isEditing={isEditing}
       >
-        {isEditing ? (
-          <h2 className="text-xl font-bold mb-4">
-            Editar {selectedPerson?.nome_pessoa}
-          </h2>
-        ) : (
-          <h2 className="text-xl font-bold mb-4">Adicionar Nova Pessoa</h2>
-        )}
-
-        {isEditing && selectedPerson ? (
-          <form className="space-y-4">
-            <div>
-              <label htmlFor="cd_pessoa">Código:</label>
-              <input
-                type="text"
-                id="cd_pessoa"
-                name="cd_pessoa"
-                defaultValue={selectedPerson.cd_pessoa}
-                readOnly
-              />
-            </div>
-            <div>
-              <label htmlFor="cpf">CPF:</label>
-              <input
-                type="text"
-                id="cpf"
-                name="cpf"
-                defaultValue={selectedPerson.cpf}
-              />
-            </div>
-            <div>
-              <label htmlFor="nome_pessoa">Nome:</label>
-              <input
-                type="text"
-                id="nome_pessoa"
-                name="nome_pessoa"
-                defaultValue={selectedPerson.nome_pessoa}
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="data_nascimento"
-                className="block text-light text-sm font-bold mb-2"
-              >
-                Data de Nascimento:
-              </label>
-              <input
-                type="date"
-                id="data_nascimento"
-                name="data_nascimento"
-                defaultValue={selectedPerson.data_nascimento}
-              />
-            </div>
-            <div>
-              <label htmlFor="sexo">Sexo:</label>
-              <select id="sexo" name="sexo" defaultValue={selectedPerson.sexo}>
-                <option value="M">Masculino</option>
-                <option value="F">Feminino</option>
-              </select>
-            </div>
-            <div>
-              <label htmlFor="email">Email:</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                defaultValue={selectedPerson.email}
-              />
-            </div>
-            <div>
-              <label htmlFor="telefone">Telefone:</label>
-              <input
-                type="tel"
-                id="telefone"
-                name="telefone"
-                defaultValue={selectedPerson.telefone}
-              />
-            </div>
-            <div>
-              <label htmlFor="rua">Rua:</label>
-              <input
-                type="text"
-                id="rua"
-                name="rua"
-                defaultValue={selectedPerson.rua}
-              />
-            </div>
-            <div>
-              <label htmlFor="numero">Número:</label>
-              <input
-                type="number"
-                id="numero"
-                name="numero"
-                defaultValue={selectedPerson.numero}
-              />
-            </div>
-            <div>
-              <label htmlFor="bairro">Bairro:</label>
-              <input
-                type="text"
-                id="bairro"
-                name="bairro"
-                defaultValue={selectedPerson.bairro}
-              />
-            </div>
-            <div>
-              <label htmlFor="cidade">Cidade:</label>
-              <input
-                type="text"
-                id="cidade"
-                name="cidade"
-                defaultValue={selectedPerson.cidade}
-                className="bg-background"
-              />
-            </div>
-            <div>
-              <label htmlFor="estado">Estado:</label>
-              <input
-                type="text"
-                id="estado"
-                name="estado"
-                defaultValue={selectedPerson.estado}
-              />
-            </div>
-            <div>
-              <label htmlFor="cep">CEP:</label>
-              <input
-                type="text"
-                id="cep"
-                name="cep"
-                defaultValue={selectedPerson.cep}
-              />
-            </div>
-          </form>
-        ) : (
-          <form className="space-y-4">
-            <div>
-              <label htmlFor="new_cpf">CPF:</label>
-              <input type="text" id="new_cpf" name="new_cpf" />
-            </div>
-            <div>
-              <label htmlFor="new_nome_pessoa">Nome:</label>
-              <input type="text" id="new_nome_pessoa" name="new_nome_pessoa" />
-            </div>
-            <div>
-              <label htmlFor="new_data_nascimento">Data de Nascimento:</label>
-              <input
-                type="date"
-                id="new_data_nascimento"
-                name="new_data_nascimento"
-              />
-            </div>
-            <div>
-              <label htmlFor="new_sexo">Sexo:</label>
-              <select id="new_sexo" name="new_sexo">
-                <option value="">Selecione</option>
-                <option value="M">Masculino</option>
-                <option value="F">Feminino</option>
-                <option value="O">Outro</option>
-              </select>
-            </div>
-            <div>
-              <label htmlFor="new_email">Email:</label>
-              <input type="email" id="new_email" name="new_email" />
-            </div>
-            <div>
-              <label htmlFor="new_telefone">Telefone:</label>
-              <input type="tel" id="new_telefone" name="new_telefone" />
-            </div>
-            <div>
-              <label htmlFor="new_rua">Rua:</label>
-              <input type="text" id="new_rua" name="new_rua" />
-            </div>
-            <div>
-              <label htmlFor="new_numero">Número:</label>
-              <input type="number" id="new_numero" name="new_numero" />
-            </div>
-            <div>
-              <label htmlFor="new_bairro">Bairro:</label>
-              <input type="text" id="new_bairro" name="new_bairro" />
-            </div>
-            <div>
-              <label htmlFor="new_cidade">Cidade:</label>
-              <input type="text" id="new_cidade" name="new_cidade" />
-            </div>
-            <div>
-              <label htmlFor="new_estado">Estado:</label>
-              <input type="text" id="new_estado" name="new_estado" />
-            </div>
-            <div>
-              <label htmlFor="new_cep">CEP:</label>
-              <input type="text" id="new_cep" name="new_cep" />
-            </div>
-          </form>
-        )}
-
-        <button onClick={handleCloseModal}>Fechar</button>
+        <PeopleForm handleCloseModal={handleCloseModal} selectedPerson={selectedPerson} isEditing={isEditing} />
       </Modal>
+
+      <Modal
+        isOpen={openDeleteModal}
+        onClose={handleCloseModal}
+      >
+        <DeleteModalContent handleCloseModal={handleCloseModal} selectedPerson={selectedPerson} />
+      </Modal>
+
     </Surface>
   );
 }
