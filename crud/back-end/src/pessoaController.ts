@@ -33,24 +33,26 @@ async function postPessoas(req: Request, res: Response){
 }
 
 async function deletePessoa(req: Request, res: Response) {
-    const { id } = req.params;
-
     try {
+        const { cd_pessoa } = req.params;
         const pessoaExistente = await prisma.pessoas.findUnique({
-            where: { id: Number(id) }
+            where: { 
+                cd_pessoa: parseInt(cd_pessoa) 
+            }
         });
         if (!pessoaExistente) {
-            return res.status(404).json({ error: "Pessoa não encontrada" });
+            res.status(404).json({ error: "Pessoa não encontrada" });
+            return
         }
 
         await prisma.pessoas.delete({
-            where: { id: Number(id) }
+            where: { cd_pessoa: parseInt(cd_pessoa) }
         });
-
-        return res.status(200).json({ message: "Pessoa deletada com sucesso" });
-    } catch (erro) {
-        console.error("Erro ao deletar pessoa:", erro);
-        return res.status(500).json({ error: "Erro ao deletar pessoa" });
+        res.status(204).json({ message: "Pessoa deletada com sucesso" });
+    } catch (err) {
+        res.status(500).json({ 
+            error: err
+         });
     }
 }
 
