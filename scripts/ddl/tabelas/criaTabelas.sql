@@ -1,10 +1,11 @@
-create database Projeto;
-GO 
+create
+database Projeto;
+GO
 USE Projeto;
 
 CREATE TABLE pessoas
 (
-    cd_pessoa       INT PRIMARY KEY     NOT NULL,
+    cd_pessoa       INT PRIMARY KEY     NOT NULL IDENTITY(1,1),
     cpf             CHAR(11) UNIQUE     NOT NULL,
     nome_pessoa     VARCHAR(100) UNIQUE NOT NULL,
     data_nascimento DATE                NOT NULL,
@@ -22,7 +23,7 @@ GO
 
 CREATE TABLE fornecedores
 (
-    cd_fornecedor INT PRIMARY KEY    NOT NULL,
+    cd_fornecedor INT PRIMARY KEY    NOT NULL IDENTITY(1,1),
     razao_social  VARCHAR(100),
     cnpj          VARCHAR(14) UNIQUE NOT NULL,
     telefone      CHAR(11),
@@ -37,28 +38,28 @@ GO
 
 CREATE TABLE marcas
 (
-    cd_marca   INT PRIMARY KEY NOT NULL,
+    cd_marca   INT PRIMARY KEY NOT NULL IDENTITY(1,1),
     nome_marca VARCHAR(50)     NOT NULL
 );
 GO
 
 CREATE TABLE status
 (
-    cd_status   INT PRIMARY KEY NOT NULL,
+    cd_status   INT PRIMARY KEY NOT NULL IDENTITY(1,1),
     nome_status VARCHAR(20)     NOT NULL
 );
 GO
 
 CREATE TABLE cargos
 (
-    cd_cargo   INT PRIMARY KEY NOT NULL,
+    cd_cargo   INT PRIMARY KEY NOT NULL IDENTITY(1,1),
     nome_cargo VARCHAR(20)     NOT NULL
 );
 GO
 
 CREATE TABLE log_pessoa
 (
-    cd_log    INT PRIMARY KEY NOT NULL,
+    cd_log    INT PRIMARY KEY NOT NULL IDENTITY(1,1),
     usuario   VARCHAR(100),
     acao      CHAR(1),
     descricao VARCHAR(255),
@@ -68,7 +69,7 @@ GO
 
 CREATE TABLE modelos
 (
-    cd_modelo   INT PRIMARY KEY NOT NULL,
+    cd_modelo   INT PRIMARY KEY NOT NULL IDENTITY(1,1),
     nome_modelo VARCHAR(50),
     ano_modelo  SMALLINT,
     cd_marca    INT             NOT NULL,
@@ -78,7 +79,7 @@ GO
 
 CREATE TABLE funcionarios
 (
-    cd_funcionario INT PRIMARY KEY NOT NULL,
+    cd_funcionario INT PRIMARY KEY NOT NULL IDENTITY(1,1),
     cd_pessoa      INT             NOT NULL,
     cd_cargo       INT             NOT NULL,
     FOREIGN KEY (cd_pessoa) REFERENCES pessoas (cd_pessoa),
@@ -88,7 +89,7 @@ GO
 
 CREATE TABLE produtos
 (
-    cd_produto    INT PRIMARY KEY NOT NULL,
+    cd_produto    INT PRIMARY KEY NOT NULL IDENTITY(1,1),
     cd_status     INT             NOT NULL,
     cd_fornecedor INT             NOT NULL,
     cd_modelo     INT             NOT NULL,
@@ -100,7 +101,7 @@ GO
 
 CREATE TABLE manutencoes
 (
-    cd_manutencao   INT PRIMARY KEY NOT NULL,
+    cd_manutencao   INT PRIMARY KEY NOT NULL IDENTITY(1,1),
     cd_tecnico      INT             NOT NULL,
     cd_produto      INT             NOT NULL,
     data_manutencao DATE            NOT NULL,
@@ -112,7 +113,7 @@ GO
 
 CREATE TABLE contratos
 (
-    cd_contrato    INT PRIMARY KEY NOT NULL,
+    cd_contrato    INT PRIMARY KEY NOT NULL IDENTITY(1,1),
     data_inicio    DATE            NOT NULL,
     data_fim       DATE,
     data_vigencia  DATE            NOT NULL,
