@@ -70,7 +70,7 @@ INSERT INTO fornecedores (cd_fornecedor, razao_social, cnpj, telefone, rua, nume
 (19, 'Cunha Aragao e Filhos', '59180672000179', '51998927096', 'Favela de Barros', 1682, 'Monsenhor Messias', 'Freitas', 'MA', '00467081'),
 (20, 'Viana e Filhos', '07695432000103', '81990170275', 'Area Sophia Azevedo', 1142, 'Lindeia', 'Mendes', 'SE', '21044883');
 
-INSERT INTO marcas (cd_modelo, nome_marca) VALUES
+INSERT INTO marcas (cd_marca, nome_marca) VALUES
 (1, 'Samsung'),
 (2, 'Apple'),
 (3, 'Dell'),
