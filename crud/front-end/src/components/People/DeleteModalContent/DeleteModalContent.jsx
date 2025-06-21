@@ -1,4 +1,13 @@
+import {deletePerson} from "../../../services/peopleService.js";
+
 export default function DeleteModalContent({ selectedPerson, handleCloseModal }) {
+  const handleDelete = async () => {
+    try {
+      await deletePerson(selectedPerson.id);
+    } catch (e) {
+      alert('Erro ao excluir pessoa');
+    }
+  }
   return (
     <div>
       <h2 className="text-center text-danger">Excluir Pessoa</h2>

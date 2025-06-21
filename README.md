@@ -36,7 +36,11 @@ Abaixo, segue os scripts SQL separados por tipo:
 ## Front-End:
 - Linguagem de Programação Javascript.
 - Utilizando Node para a criação do ambiente.
-- Biblioteca ReactJS, React-Modal, Ant Design e Axios.
+- Framework de Javascript ReactJS
+- Biblioteca para criação simples de modais React-Modal
+- Ant Design para a tabela dinâmica e estilização.
+- Axios para consumo da API do back-end via HTTP.
+- React Imask para formatação de campos de entrada.
 
 ## Back-End:
 - Lingaguem de Programação Typescript.

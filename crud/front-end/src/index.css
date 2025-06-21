@@ -57,6 +57,10 @@ button {
   gap: 16px;
 }
 
+.gap-2{
+  gap: 4px;
+}
+
 .flex {
   display: flex;
 }
