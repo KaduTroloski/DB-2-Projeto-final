@@ -13,8 +13,13 @@ interface errorType{
         status: number
 }
 
-app.use('/pessoas', router)
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  next();
+})
 
+app.use('/pessoas', router)
 
 app.use((req: Request, res: Response, next: NextFunction) => {
     const erro:errorType = {
