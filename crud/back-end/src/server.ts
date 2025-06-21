@@ -1,6 +1,8 @@
+router.delete('/pessoas/:id', deletarPessoa);
 import express from 'express'
 import { Request, Response, NextFunction } from 'express';
 import router from './pessoaRouter';
+import pessoaRouter from './pessoaRouter';
 
 const app = express();
 app.use(express.urlencoded({extended: false}))
@@ -26,6 +28,8 @@ app.use((erro: errorType, req:Request, res: Response, next: NextFunction) => {
     res.status(erro.status || 500);
     res.send({ error: { message: erro.message }})
 })
+
+app.use('/api', pessoaRouter);
 
 
 app.listen(3001, () => 'server running on port 3001')
