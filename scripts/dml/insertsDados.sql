@@ -1,14 +1,14 @@
 INSERT INTO log_pessoa (cd_log, usuario, acao, descricao, data_hora) VALUES
-(1, 'wsales', 'U', 'Aut in tenetur vel eveniet aperiam perferendis.', '2023-10-03 23:18:00'),
-(2, 'sabrina81', 'D', 'Harum assumenda dignissimos laudantium deserunt.', '2025-05-31 19:41:04'),
-(3, 'amanda30', 'D', 'Aliquid similique reprehenderit quis impedit architecto minus laborum.', '2025-04-06 14:20:58'),
-(4, 'oliveiramaria-vitoria', 'D', 'Iste illo nostrum libero consectetur consequuntur excepturi.', '2025-03-02 02:06:29'),
-(5, 'enogueira', 'D', 'Rerum laborum cupiditate porro ipsa.', '2023-11-22 01:57:35'),
-(6, 'jjesus', 'D', 'Laudantium facilis impedit repellat minus voluptate.', '2024-02-28 18:57:15'),
-(7, 'raulgoncalves', 'U', 'Sed vel dignissimos.', '2024-04-13 18:58:24'),
-(8, 'martinsdiogo', 'U', 'Ipsum nemo repellendus qui in nesciunt temporibus.', '2025-06-08 07:12:12'),
-(9, 'biancada-conceicao', 'U', 'Laborum consequuntur facilis iste.', '2024-12-13 10:29:22'),
-(10, 'leticiacostela', 'U', 'Eaque perspiciatis iusto itaque consequuntur.', '2024-01-05 18:04:54');
+(1, 'wsales', 'U', 'Atualização de dados cadastrais na tabela Pessoa.', '2023-10-03 23:18:00'),
+(2, 'sabrina81', 'D', 'Exclusão de registro na tabela Pessoa.', '2025-05-31 19:41:04'),
+(3, 'amanda30', 'D', 'Exclusão de registro na tabela Pessoa.', '2025-04-06 14:20:58'),
+(4, 'oliveiramaria-vitoria', 'D', 'Exclusão de registro na tabela Pessoa.', '2025-03-02 02:06:29'),
+(5, 'enogueira', 'D', 'Exclusão de registro na tabela Pessoa.', '2023-11-22 01:57:35'),
+(6, 'jjesus', 'D', 'Exclusão de registro na tabela Pessoa.', '2024-02-28 18:57:15'),
+(7, 'raulgoncalves', 'U', 'Atualização de dados cadastrais na tabela Pessoa.', '2024-04-13 18:58:24'),
+(8, 'martinsdiogo', 'U', 'Atualização de dados cadastrais na tabela Pessoa.', '2025-06-08 07:12:12'),
+(9, 'biancada-conceicao', 'U', 'Atualização de dados cadastrais na tabela Pessoa.', '2024-12-13 10:29:22'),
+(10, 'leticiacostela', 'U', 'Atualização de dados cadastrais na tabela Pessoa.', '2024-01-05 18:04:54');
 
 INSERT INTO pessoas (cd_pessoa, cpf, nome_pessoa, data_nascimento, sexo, email, telefone, rua, numero, bairro, cidade, estado, cep) VALUES
 (1, '60915478366', 'Lara Aragao', '1986-03-02', 'M', 'azevedosofia@bol.com.br', '97190021800', 'Feira de Campos', 823, 'Paraiso', 'Mendes', 'SE', '62120563'),
