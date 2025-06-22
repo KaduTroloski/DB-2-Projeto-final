@@ -3,7 +3,9 @@ import {deletePerson} from "../../../services/peopleService.js";
 export default function DeleteModalContent({ selectedPerson, handleCloseModal }) {
   const handleDelete = async () => {
     try {
-      await deletePerson(selectedPerson.id);
+      await deletePerson(selectedPerson.cd_pessoa);
+      alert('Pessoa excluída com sucesso');
+      window.location.reload();
     } catch (e) {
       alert('Erro ao excluir pessoa');
     }
@@ -15,10 +17,7 @@ export default function DeleteModalContent({ selectedPerson, handleCloseModal })
       <div className="flex justify-center gap-16">
         <button
           className="text-light"
-          onClick={() => {
-            alert('Pessoa excluída com sucesso!');
-            handleCloseModal();
-          }}
+          onClick={handleDelete}
         >
           Excluir
         </button>

@@ -13,11 +13,32 @@ export default function PeopleForm({isEditing, selectedPerson, handleCloseModal}
     event.preventDefault();
 
     try {
-      isEditing
-        ? await editPerson(person)
-        : await createPerson(person)
+      const dateParts = person.data_nascimento.split('-');
+      const year = parseInt(dateParts[0], 10);
+      const month = parseInt(dateParts[1], 10) - 1;
+      const day = parseInt(dateParts[2], 10);
+
+      const localDate = new Date(year, month, day);
+      const dateIsoString = localDate.toISOString();
+
+      const personData = {
+        ...person,
+        data_nascimento: dateIsoString,
+      }
+
+      if (isEditing) {
+        const personId = personData.cd_pessoa;
+        delete personData.cd_pessoa;
+        await editPerson(personId, personData);
+      } else {
+        delete personData.cd_pessoa;
+        await createPerson(personData);
+      }
+
+      alert("Pessoa salva com sucesso");
+      window.location.reload();
     } catch (e) {
-      alert("Erro ao salvar pessoa")
+      alert("Erro ao salvar pessoa " + e.message);
     }
   }
   return (
@@ -32,17 +53,6 @@ export default function PeopleForm({isEditing, selectedPerson, handleCloseModal}
         )
       }
       <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
-        {isEditing && (
-          <div>
-            <label htmlFor="cd_pessoa">Código:</label>
-            <input
-              type="text"
-              id="cd_pessoa"
-              name="cd_pessoa"
-              readOnly
-            />
-          </div>
-        )}
         <PeopleInput
           type="tel"
           value={person.cpf}
@@ -119,8 +129,11 @@ export default function PeopleForm({isEditing, selectedPerson, handleCloseModal}
           required
         />
         <PeopleInput
-          value={person.numero}
-          onChange={val => setPerson({...person, numero: val})}
+          value={`${person.numero}`}
+          onChange={val => {
+            const number = parseInt(val, 10);
+            setPerson({...person, numero: isNaN(number) ? '' : number })
+          }}
           label='Número:'
           id='numero'
           type="text"

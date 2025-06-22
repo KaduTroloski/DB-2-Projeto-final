@@ -10,16 +10,16 @@ export const getPeople = async () => {
   return response.data
 }
 
-export const createPerson = async (person) => {
-  const response = await axios.post(baseURL + 'pessoas', person);
+export const createPerson = async (data) => {
+  const response = await axios.post(baseURL + 'pessoas', data);
   if (response.status !== 201) {
     throw new Error(`Erro ao criar pessoa: ${response.statusText}`);
   }
   return response.data;
 }
 
-export const editPerson = async (id) => {
-  const response = await axios.put(baseURL + `pessoas/${id}`);
+export const editPerson = async (id, data) => {
+  const response = await axios.put(baseURL + `pessoas/${id}`, data);
   if (response.status !== 204) {
     throw new Error(`Erro ao editar pessoa ${id}: ${response.statusText}`);
   }
