@@ -3,6 +3,6 @@ password=Password123!
 
 echo importing data will start in $wait_time...
 sleep $wait_time
-echo executing script...
+echo executing script
 
 /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P $password -i ./initScript.sql -C
