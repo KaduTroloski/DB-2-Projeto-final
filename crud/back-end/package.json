@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "node --watch -r ts-node/register src/server.ts"
+    "dev": "node --watch -r ts-node/register src/server.ts",
+    "postinstall": "if not exist .env copy .env.example .env",
+    "setup-db": "npx prisma db pull && npx prisma generate",
+    "start-server": "timeout /t 50 /nobreak && npm run setup-db && npm run dev",
+    "start-docker": "docker-compose up",
+    "start": "npm-run-all --parallel start-docker start-server"
   },
   "keywords": [],
   "author": "",

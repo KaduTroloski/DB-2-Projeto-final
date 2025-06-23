@@ -85,7 +85,7 @@ CREATE TABLE log_pessoa
     cd_log    INT PRIMARY KEY NOT NULL IDENTITY(1,1),
     usuario   VARCHAR(100),
     acao      CHAR(1),
-    descricao VARCHAR(255),
+    descricao VARCHAR(500),
     data_hora DATETIME        NOT NULL
 );
 END;
@@ -428,66 +428,71 @@ END')
 END;
 GO
 
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID('trg_log_alteracao_pessoas') AND type = 'TR')
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID('ti_pessoa') AND type = 'TR')
 BEGIN
-    EXEC('CREATE TRIGGER trg_log_alteracao_pessoas
+    EXEC('CREATE TRIGGER ti_pessoa
 ON pessoas
-AFTER INSERT, UPDATE, DELETE
+FOR INSERT
 AS 
-BEGIN
- SET NOCOUNT ON;    
-
+BEGIN  
    if ROWCOUNT_BIG() = 0
     return
 
-    DECLARE @acao VARCHAR(10); 
+    DECLARE @acao VARCHAR(10) = "I"; 
     DECLARE @usuario VARCHAR(100)  = SYSTEM_USER;
     DECLARE @data_hora DATETIME = GETDATE()
 
-    IF EXISTS(SELECT * FROM inserted) AND NOT EXISTS(SELECT * FROM deleted)
-        SET @acao = "I"
-    ELSE IF EXISTS(SELECT * FROM deleted) AND NOT EXISTS(SELECT * FROM inserted)
-        SET @acao = "D"
-    ELSE IF EXISTS(SELECT * FROM inserted) AND EXISTS(SELECT * FROM deleted)
-        SET @acao = "U";
+        INSERT INTO log_pessoa
+	    VALUES(@usuario, @acao, (SELECT * FROM inserted FOR JSON AUTO), @data_hora)
 
-    IF @acao = "I"
-    BEGIN
-        INSERT INTO log_clientes (usuario, acao,descricao, data_hora)
-        SELECT 
-            @usuario, 
-            @acao, 
-            (SELECT * FROM inserted FOR JSON AUTO),
-            @data_hora
-    END
-    ELSE
-    IF @acao = "D"
-    BEGIN
-        INSERT INTO log_clientes (usuario, acao,descricao, data_hora)
-        SELECT 
-            @usuario, 
-            @acao, 
-            (SELECT * FROM deleted FOR JSON AUTO),
-            @data_hora
-    END
-    ELSE
-    BEGIN
-        INSERT INTO log_clientes (usuario, acao,descricao, data_hora)
-        SELECT 
-            @usuario, 
-            @acao, 
-             (
-            SELECT *
-            FROM
-            (
-                SELECT * FROM deleted
-                UNION ALL
-                SELECT * FROM inserted
-            ) AS Changes
-            FOR JSON AUTO
-        ),
-            @data_hora
-    END
+END')
+END;
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID('td_pessoa') AND type = 'TR')
+BEGIN
+    EXEC('CREATE TRIGGER td_pessoa
+ON pessoas
+FOR DELETE
+AS 
+BEGIN  
+   if ROWCOUNT_BIG() = 0
+    return
+
+    DECLARE @acao VARCHAR(10) = "D"; 
+    DECLARE @usuario VARCHAR(100)  = SYSTEM_USER;
+    DECLARE @data_hora DATETIME = GETDATE()
+
+        INSERT INTO log_pessoa
+	VALUES(@usuario, @acao, (SELECT * FROM deleted FOR JSON AUTO), @data_hora)
+
+END')
+END;
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID('tu_pessoa') AND type = 'TR')
+BEGIN
+    EXEC('CREATE TRIGGER tu_pessoa
+ON pessoas
+AFTER UPDATE
+AS 
+BEGIN  
+       if ROWCOUNT_BIG() = 0
+    return
+
+    DECLARE @acao VARCHAR(10) = "U"; 
+    DECLARE @usuario VARCHAR(100)  = SYSTEM_USER;
+    DECLARE @data_hora DATETIME = GETDATE()
+	DECLARE @json_deleted NVARCHAR(MAX);   
+    DECLARE @json_inserted NVARCHAR(MAX); 
+    DECLARE @descricao NVARCHAR(MAX); 
+    SELECT @json_deleted = (SELECT * FROM deleted FOR JSON AUTO);
+    SELECT @json_inserted = (SELECT * FROM inserted FOR JSON AUTO);
+    SET @descricao = @json_deleted + @json_inserted;
+
+        INSERT INTO log_pessoa
+		VALUES(@usuario, @acao,@descricao, @data_hora)
+
 END')
 END;
 GO
