@@ -378,5 +378,183 @@ INSERT INTO manutencoes (cd_tecnico, cd_produto, data_manutencao, descricao) VAL
 END;
 GO
 
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID('fn_CalcularIdade') AND type = 'IF')
+BEGIN
+    EXEC('CREATE FUNCTION fn_CalcularIdade (@cd_pessoa INT)
+RETURNS INT
+AS
+BEGIN
+    DECLARE @idade INT
+    SELECT @idade = DATEDIFF(YEAR, data_nascimento, GETDATE())
+    FROM pessoas
+    WHERE cd_pessoa = @cd_pessoa
+
+    RETURN @idade
+END;
+')
+END;
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID('fn_ProdutosPorFornecedor') AND type = 'IF')
+BEGIN
+    EXEC('CREATE FUNCTION fn_ProdutosPorFornecedor (@cd_fornecedor INT)
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT p.cd_produto, m.nome_modelo, s.nome_status
+    FROM produtos p
+    INNER JOIN modelos m ON p.cd_modelo = m.cd_modelo
+    INNER JOIN status s ON p.cd_status = s.cd_status
+    WHERE p.cd_fornecedor = @cd_fornecedor
+)')
+END;
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID('fn_StatusProduto') AND type = 'IF')
+BEGIN
+    EXEC('CREATE FUNCTION fn_StatusProduto (@cd_produto INT)
+RETURNS VARCHAR(20)
+AS
+BEGIN
+    DECLARE @status VARCHAR(20)
+    SELECT @status = s.nome_status
+    FROM produtos p
+    INNER JOIN status s ON p.cd_status = s.cd_status
+    WHERE p.cd_produto = @cd_produto
+
+    RETURN @status
+END')
+END;
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID('trg_log_alteracao_pessoas') AND type = 'TR')
+BEGIN
+    EXEC('CREATE TRIGGER trg_log_alteracao_pessoas
+ON pessoas
+AFTER INSERT, UPDATE, DELETE
+AS 
+BEGIN
+ SET NOCOUNT ON;    
+
+   if ROWCOUNT_BIG() = 0
+    return
+
+    DECLARE @acao VARCHAR(10); 
+    DECLARE @usuario VARCHAR(100)  = SYSTEM_USER;
+    DECLARE @data_hora DATETIME = GETDATE()
+
+    IF EXISTS(SELECT * FROM inserted) AND NOT EXISTS(SELECT * FROM deleted)
+        SET @acao = "I"
+    ELSE IF EXISTS(SELECT * FROM deleted) AND NOT EXISTS(SELECT * FROM inserted)
+        SET @acao = "D"
+    ELSE IF EXISTS(SELECT * FROM inserted) AND EXISTS(SELECT * FROM deleted)
+        SET @acao = "U";
+
+    IF @acao = "I"
+    BEGIN
+        INSERT INTO log_clientes (usuario, acao,descricao, data_hora)
+        SELECT 
+            @usuario, 
+            @acao, 
+            (SELECT * FROM inserted FOR JSON AUTO),
+            @data_hora
+    END
+    ELSE
+    IF @acao = "D"
+    BEGIN
+        INSERT INTO log_clientes (usuario, acao,descricao, data_hora)
+        SELECT 
+            @usuario, 
+            @acao, 
+            (SELECT * FROM deleted FOR JSON AUTO),
+            @data_hora
+    END
+    ELSE
+    BEGIN
+        INSERT INTO log_clientes (usuario, acao,descricao, data_hora)
+        SELECT 
+            @usuario, 
+            @acao, 
+             (
+            SELECT *
+            FROM
+            (
+                SELECT * FROM deleted
+                UNION ALL
+                SELECT * FROM inserted
+            ) AS Changes
+            FOR JSON AUTO
+        ),
+            @data_hora
+    END
+END')
+END;
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID('excluir_pessoa') AND type = 'P')
+BEGIN
+    EXEC('CREATE PROCEDURE excluir_pessoa (
+    @cd_pessoa CHAR(11)
+)
+AS
+    BEGIN
+        DECLARE
+            @contagem_funcionarios INT,
+            @contagem_contratos INT;
+
+        SELECT @contagem_funcionarios = COUNT(cd_funcionario)
+        FROM funcionarios
+        WHERE cd_pessoa = @cd_pessoa
+
+        IF @contagem_funcionarios > 0
+            BEGIN
+               THROW 50001, "PESSOA CADASTRADA COMO FUNCIONARIO. NAO E POSSIVEL EXCLUIR.", 1;
+            END
+
+        SELECT @contagem_contratos = COUNT(cd_contrato)
+        FROM contratos
+        WHERE cd_cliente = @cd_pessoa
+
+        IF @contagem_contratos > 0
+        BEGIN
+           THROW 50001, "PESSOA POSSUI UM CONTRATO. NAO E POSSIVEL EXCLUIR.", 1;
+        END
+
+        DELETE FROM pessoas
+        WHERE cd_pessoa = @cd_pessoa;
+    END')
+END;
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID('adicionar_pessoa') AND type = 'P')
+BEGIN
+    EXEC('CREATE PROCEDURE adicionar_pessoa (
+    @cpf CHAR(11),
+    @nome VARCHAR(100),
+    @data_nascimento DATE,
+    @sexo CHAR(1),
+    @email VARCHAR(35),
+    @telefone CHAR(11),
+    @rua varchar(100),
+    @numero smallint,
+    @bairro varchar(50),
+    @cidade varchar(50),
+    @estado char(2),
+    @cep char(8)
+)
+AS
+    BEGIN
+        IF @sexo NOT IN ("F", "M")
+            BEGIN
+                THROW 50001, "VALOR PARA SEXO DE PESSOA INVALIDO.", 1;
+            END
+
+        INSERT INTO pessoas (cpf, nome_pessoa, data_nascimento, sexo, email, telefone, rua, numero, bairro, cidade, estado, cep)
+        VALUES (@cpf, @nome, @data_nascimento, @sexo, @email, @telefone, @rua, @numero, @bairro, @cidade, @estado, @cep);
+    END')
+END;
+GO
+
 
 
