@@ -37,7 +37,6 @@ Abaixo, segue os scripts SQL separados por tipo:
 - Linguagem de Programação Javascript.
 - Utilizando Node para a criação do ambiente.
 - Framework de Javascript ReactJS
-- Biblioteca para criação simples de modais React-Modal
 - Ant Design para a tabela dinâmica e estilização.
 - Axios para consumo da API do back-end via HTTP.
 - React Imask para formatação de campos de entrada.
@@ -47,6 +46,7 @@ Abaixo, segue os scripts SQL separados por tipo:
 - Utilizando Node para a criação do ambiente.
 - Blibiotecas Prisma.
 - Framework Express
+- Docker para a inicialização do banco de dados
 
 ### Passos para execução do CRUD
 
