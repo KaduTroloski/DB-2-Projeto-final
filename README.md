@@ -55,26 +55,48 @@ Abaixo, segue os scripts SQL separados por tipo:
 #### Back-End
 1. Requisitos:
    - Docker instalado
-2. Navegue até o diretório do back-end:
+   - Node.js instalado
+   - NPM instalado
+    
+3. Navegue até o diretório do back-end:
 `cd ./crud/back-end/`
-3. Rode o comando para subir o container do banco de dados:
-`docker compose up -d`
 
+5. Rode o comando para instalar as dependencias:
+`npm install`
+
+6. Atualize o arquivo .env gerado com as informações do banco.
 
 ---
 
 #### Front-end
 1. Requisitos:
    - Node.js instalado
-   - NPM istalado
+   - NPM instalado
+     
 2. Navegue até o diretório do front-end:  
 `cd ./crud/front-end/`
-3. Instale as dependências do projeto:  
+
+4. Instale as dependências do projeto:  
 `npm install`
-4. Execute o projeto:  
-`npm run dev`
-5. Acesse o front-end no navegador:  
-O vite inicilizará o servidor de desenvolvimento e fornecerá um link, geralmente `http://localhost:5173/`.
+
+### INICAILIZAR
+
+1. Primero deve concluir os passos de execução do BACK-END e FRONT-END
+
+2. Va para a pasta principal do CRUD:
+`cd ..`
+
+3. Execute o comando para instalar as dependencias:
+`npm install`
+
+4. Após verificar que todas as dependecia estão instaladas rode o projeto:
+`npm run start-all`
+
+5. Após a inicalização abra o front-end pelo navegador, ele estara localizado na seguinte URL:
+`localhost:3000`
+
+6. Caso queira testar o CRUD via algum software estilo Postman ou Insomnia o back-end estara localizado na URL:
+`localhost:3001`
 
 ### Relatório Final
 O relatório final está disponível no arquivo [relatorio-final/template1.docx](relatorio/template1.docx).
