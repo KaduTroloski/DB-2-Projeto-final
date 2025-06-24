@@ -79,7 +79,9 @@ Abaixo, segue os scripts SQL separados por tipo:
 4. Instale as dependências do projeto:  
 `npm install`
 
-### INICAILIZAR
+---
+
+#### Inicialização
 
 1. Primero deve concluir os passos de execução do BACK-END e FRONT-END
 
