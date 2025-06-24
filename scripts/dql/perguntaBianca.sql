@@ -1,3 +1,4 @@
+---- analisar qual modelo de impressora que apresentou mais  problema de impressão no ultimo semestre de um cliente especifico.sql
 SELECT mo.nome_modelo, COUNT(*) AS total_problemas
 FROM contratos c
 JOIN produtos p ON c.cd_produto = p.cd_produto
