@@ -1,9 +1,9 @@
 {
-  "name": "CRUD do projeto",
+  "name": "crud",
   "version": "1.0.0",
   "scripts": {
     "start-frontend": "cd front-end && npm run dev",
-    "start-backend": "cd back-end && npm run start-backend-full",
+    "start-backend": "cd back-end && npm run start",
     "start-all": "npm-run-all --parallel start-frontend start-backend"
   },
   "devDependencies": {

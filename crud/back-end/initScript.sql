@@ -85,7 +85,7 @@ CREATE TABLE log_pessoa
     cd_log    INT PRIMARY KEY NOT NULL IDENTITY(1,1),
     usuario   VARCHAR(100),
     acao      CHAR(1),
-    descricao VARCHAR(500),
+    descricao NVARCHAR(MAX),
     data_hora DATETIME        NOT NULL
 );
 END;
@@ -477,8 +477,8 @@ ON pessoas
 AFTER UPDATE
 AS 
 BEGIN  
-       if ROWCOUNT_BIG() = 0
-    return
+    if ROWCOUNT_BIG() = 0
+        return
 
     DECLARE @acao VARCHAR(10) = "U"; 
     DECLARE @usuario VARCHAR(100)  = SYSTEM_USER;
@@ -486,9 +486,11 @@ BEGIN
 	DECLARE @json_deleted NVARCHAR(MAX);   
     DECLARE @json_inserted NVARCHAR(MAX); 
     DECLARE @descricao NVARCHAR(MAX); 
-    SELECT @json_deleted = (SELECT * FROM deleted FOR JSON AUTO);
-    SELECT @json_inserted = (SELECT * FROM inserted FOR JSON AUTO);
-    SET @descricao = @json_deleted + @json_inserted;
+
+    SELECT @json_deleted = (SELECT * FROM deleted FOR JSON PATH);
+    SELECT @json_inserted = (SELECT * FROM inserted FOR JSON PATH);
+
+    SET @descricao = CONCAT("Deleted data: {", @json_deleted ,"} Inserted data: {", @json_inserted, "}");
 
         INSERT INTO log_pessoa
 		VALUES(@usuario, @acao,@descricao, @data_hora)
@@ -536,7 +538,7 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID('adicionar_
 BEGIN
     EXEC('CREATE PROCEDURE adicionar_pessoa (
     @cpf CHAR(11),
-    @nome VARCHAR(100),
+    @nome_pessoa VARCHAR(100),
     @data_nascimento DATE,
     @sexo CHAR(1),
     @email VARCHAR(35),
@@ -556,10 +558,88 @@ AS
             END
 
         INSERT INTO pessoas (cpf, nome_pessoa, data_nascimento, sexo, email, telefone, rua, numero, bairro, cidade, estado, cep)
-        VALUES (@cpf, @nome, @data_nascimento, @sexo, @email, @telefone, @rua, @numero, @bairro, @cidade, @estado, @cep);
+        VALUES (@cpf, @nome_pessoa, @data_nascimento, @sexo, @email, @telefone, @rua, @numero, @bairro, @cidade, @estado, @cep);
     END')
 END;
 GO
 
+IF NOT EXISTS(SELECT name FROM sys.indexes WHERE object_id = OBJECT_ID('pessoas') AND type_desc = 'NONCLUSTERED' AND name = 'idx_pessoas_estado')
+BEGIN
+CREATE INDEX idx_pessoas_estado
+    ON pessoas (estado);
+END;
+GO
 
+IF NOT EXISTS(SELECT name FROM sys.indexes WHERE object_id = OBJECT_ID('contratos') AND type_desc = 'NONCLUSTERED' AND name = 'idx_contratos_data_inicio')
+BEGIN
+CREATE INDEX idx_contratos_data_inicio
+    ON contratos (data_inicio, cd_cliente)
+    INCLUDE (valor_contrato);
+END;
+GO
 
+IF NOT EXISTS(SELECT name FROM sys.indexes WHERE object_id = OBJECT_ID('manutencoes') AND type_desc = 'NONCLUSTERED' AND name = 'idx_manutencoes_data_manutencao')
+BEGIN
+CREATE INDEX idx_manutencoes_data_manutencao
+ON manutencoes (data_manutencao);
+END;
+GO
+
+IF NOT EXISTS(SELECT name FROM sys.indexes WHERE object_id = OBJECT_ID('pessoas') AND type_desc = 'NONCLUSTERED' AND name = 'idx_pessoas_cidade')
+BEGIN
+CREATE INDEX idx_pessoas_cidade
+ON pessoas (cidade);
+END;
+GO
+
+IF NOT EXISTS(SELECT name FROM sys.indexes WHERE object_id = OBJECT_ID('contratos') AND type_desc = 'NONCLUSTERED' AND name = 'idx_contratos_cd_produto')
+BEGIN
+CREATE INDEX idx_contratos_cd_produto
+ON contratos (cd_produto);
+END;
+GO
+
+IF NOT EXISTS(SELECT name FROM sys.indexes WHERE object_id = OBJECT_ID('contratos') AND type_desc = 'NONCLUSTERED' AND name = 'idx_contratos_cd_cliente')
+BEGIN
+CREATE INDEX idx_contratos_cd_cliente
+ON contratos (cd_cliente)
+INCLUDE (cd_produto);
+END;
+GO
+
+IF NOT EXISTS(SELECT name FROM sys.indexes WHERE object_id = OBJECT_ID('manutencoes') AND type_desc = 'NONCLUSTERED' AND name = 'idx_manutencoes_data_produto')
+BEGIN
+CREATE INDEX idx_manutencoes_data_produto
+ON manutencoes (data_manutencao)
+INCLUDE (cd_produto);
+END;
+GO
+
+IF NOT EXISTS(SELECT name FROM sys.indexes WHERE object_id = OBJECT_ID('produtos') AND type_desc = 'NONCLUSTERED' AND name = 'idx_produtos_cd_produto')
+BEGIN
+CREATE INDEX idx_produtos_cd_produto
+ON produtos (cd_produto)
+INCLUDE (cd_modelo);
+END;
+GO
+
+IF NOT EXISTS(SELECT name FROM sys.indexes WHERE object_id = OBJECT_ID('modelos') AND type_desc = 'NONCLUSTERED' AND name = 'idx_nome_modelos')
+BEGIN
+CREATE INDEX  idx_nome_modelos
+ON modelos (nome_modelo)
+END;
+GO
+
+IF NOT EXISTS(SELECT name FROM sys.indexes WHERE object_id = OBJECT_ID('marcas') AND type_desc = 'NONCLUSTERED' AND name = 'idx_marcas_nome_marca')
+BEGIN
+CREATE INDEX idx_marcas_nome_marca
+ON marcas (nome_marca);
+END;
+GO
+
+IF NOT EXISTS(SELECT name FROM sys.indexes WHERE object_id = OBJECT_ID('status') AND type_desc = 'NONCLUSTERED' AND name = 'idx_status_nome_status')
+BEGIN
+CREATE INDEX idx_status_nome_status
+ON status (nome_status);
+END;
+GO

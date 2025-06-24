@@ -17,13 +17,11 @@ async function getPessoas(req: Request, res: Response) {
 async function postPessoas(req: Request, res: Response){
     try{
     const newPessoa: pessoas = req.body as pessoas
-    const resul: pessoas = await prisma.pessoas.create({
-        data: {
-            ...newPessoa
-        }
-    })
+    const sql = `EXEC adicionar_pessoa '${newPessoa.cpf}', '${newPessoa.nome_pessoa}', '${newPessoa.data_nascimento}', '${newPessoa.sexo}' , '${newPessoa.email}', '${newPessoa.telefone}', '${newPessoa.rua}', ${newPessoa.numero}, '${newPessoa.bairro}', '${newPessoa.cidade}', '${newPessoa.estado}', '${newPessoa.cep}'`
+    const resul: number = await prisma.$executeRawUnsafe(sql)
     res.status(201).send({
-        Pessoa_criada: resul
+        Resultado: resul,
+        Pessoa_criada: newPessoa
     })
     } catch(err){
         res.status(500).send({
@@ -72,10 +70,8 @@ async function deletePessoa(req: Request, res: Response) {
             res.status(404).json({ error: "Pessoa não encontrada" });
             return
         }
-
-        await prisma.pessoas.delete({
-            where: { cd_pessoa: parseInt(cd_pessoa) }
-        });
+        const sql = `EXEC excluir_pessoa ${cd_pessoa}`
+        await prisma.$executeRawUnsafe(sql)
         res.status(204).json({ message: "Pessoa deletada com sucesso" });
     } catch (err) {
         res.status(500).json({ 

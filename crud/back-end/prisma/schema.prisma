@@ -8,13 +8,13 @@ datasource db {
 }
 
 model cargos {
-  cd_cargo     Int            @id(map: "PK__cargos__00BD37AA06278232") @default(autoincrement())
+  cd_cargo     Int            @id(map: "PK__cargos__00BD37AA0B5CB29B") @default(autoincrement())
   nome_cargo   String         @db.VarChar(20)
   funcionarios funcionarios[]
 }
 
 model contratos {
-  cd_contrato    Int          @id(map: "PK__contrato__7BA04FCDD3FD3C45") @default(autoincrement())
+  cd_contrato    Int          @id(map: "PK__contrato__7BA04FCD27D4DDA4") @default(autoincrement())
   data_inicio    DateTime     @db.Date
   data_fim       DateTime?    @db.Date
   data_vigencia  DateTime     @db.Date
@@ -25,12 +25,16 @@ model contratos {
   pessoas        pessoas      @relation(fields: [cd_cliente], references: [cd_pessoa], onUpdate: NoAction, map: "FK__contratos__cd_cl__7FEAFD3E")
   produtos       produtos     @relation(fields: [cd_produto], references: [cd_produto], onUpdate: NoAction, map: "FK__contratos__cd_pr__00DF2177")
   funcionarios   funcionarios @relation(fields: [cd_vendedor], references: [cd_funcionario], onUpdate: NoAction, map: "FK__contratos__cd_ve__01D345B0")
+
+  @@index([cd_cliente], map: "idx_contratos_cd_cliente")
+  @@index([cd_produto], map: "idx_contratos_cd_produto")
+  @@index([data_inicio, cd_cliente], map: "idx_contratos_data_inicio")
 }
 
 model fornecedores {
-  cd_fornecedor Int        @id(map: "PK__forneced__F62AF30D5F4EBBA4") @default(autoincrement())
+  cd_fornecedor Int        @id(map: "PK__forneced__F62AF30D800AA683") @default(autoincrement())
   razao_social  String?    @db.VarChar(100)
-  cnpj          String     @unique(map: "UQ__forneced__35BD3E486BBC1BAE") @db.VarChar(14)
+  cnpj          String     @unique(map: "UQ__forneced__35BD3E48B24DD9E8") @db.VarChar(14)
   telefone      String?    @db.Char(11)
   rua           String     @db.VarChar(100)
   numero        Int        @db.SmallInt
@@ -42,7 +46,7 @@ model fornecedores {
 }
 
 model funcionarios {
-  cd_funcionario Int           @id(map: "PK__funciona__8A599F2AF34CCF1E") @default(autoincrement())
+  cd_funcionario Int           @id(map: "PK__funciona__8A599F2A91A38C4C") @default(autoincrement())
   cd_pessoa      Int
   cd_cargo       Int
   contratos      contratos[]
@@ -52,42 +56,49 @@ model funcionarios {
 }
 
 model log_pessoa {
-  cd_log    Int      @id(map: "PK__log_pess__BAC211CDE8AF08CC") @default(autoincrement())
+  cd_log    Int      @id(map: "PK__log_pess__BAC211CDE16DF4D2") @default(autoincrement())
   usuario   String?  @db.VarChar(100)
   acao      String?  @db.Char(1)
-  descricao String?  @db.VarChar(500)
+  descricao String?  @db.NVarChar(Max)
   data_hora DateTime @db.DateTime
 }
 
 model manutencoes {
-  cd_manutencao   Int          @id(map: "PK__manutenc__F2B8C5A00F5C1789") @default(autoincrement())
+  cd_manutencao   Int          @id(map: "PK__manutenc__F2B8C5A0557CAB0C") @default(autoincrement())
   cd_tecnico      Int
   cd_produto      Int
   data_manutencao DateTime     @db.Date
   descricao       String?      @db.VarChar(200)
   produtos        produtos     @relation(fields: [cd_produto], references: [cd_produto], onUpdate: NoAction, map: "FK__manutenco__cd_pr__7D0E9093")
   funcionarios    funcionarios @relation(fields: [cd_tecnico], references: [cd_funcionario], onUpdate: NoAction, map: "FK__manutenco__cd_te__7C1A6C5A")
+
+  @@index([data_manutencao], map: "idx_manutencoes_data_manutencao")
+  @@index([data_manutencao], map: "idx_manutencoes_data_produto")
 }
 
 model marcas {
-  cd_marca   Int       @id(map: "PK__marcas__844C783C0A34CAF4") @default(autoincrement())
+  cd_marca   Int       @id(map: "PK__marcas__844C783CC9920F9E") @default(autoincrement())
   nome_marca String    @db.VarChar(50)
   modelos    modelos[]
+
+  @@index([nome_marca], map: "idx_marcas_nome_marca")
 }
 
 model modelos {
-  cd_modelo   Int        @id(map: "PK__modelos__0BE8C3ABE509C610") @default(autoincrement())
+  cd_modelo   Int        @id(map: "PK__modelos__0BE8C3ABFC48938D") @default(autoincrement())
   nome_modelo String?    @db.VarChar(50)
   ano_modelo  Int?       @db.SmallInt
   cd_marca    Int
   marcas      marcas     @relation(fields: [cd_marca], references: [cd_marca], onUpdate: NoAction, map: "FK__modelos__cd_marc__70A8B9AE")
   produtos    produtos[]
+
+  @@index([nome_modelo], map: "idx_nome_modelos")
 }
 
 model pessoas {
-  cd_pessoa       Int            @id(map: "PK__pessoas__37A93133585B056B") @default(autoincrement())
-  cpf             String         @unique(map: "UQ__pessoas__D836E71F1A1AE713") @db.Char(11)
-  nome_pessoa     String         @unique(map: "UQ__pessoas__BA250DE202671D06") @db.VarChar(100)
+  cd_pessoa       Int            @id(map: "PK__pessoas__37A931330DB965CC") @default(autoincrement())
+  cpf             String         @unique(map: "UQ__pessoas__D836E71F2EA644C1") @db.Char(11)
+  nome_pessoa     String         @unique(map: "UQ__pessoas__BA250DE21447DBC7") @db.VarChar(100)
   data_nascimento DateTime       @db.Date
   sexo            String         @db.Char(1)
   email           String         @db.VarChar(35)
@@ -100,10 +111,13 @@ model pessoas {
   cep             String         @db.Char(8)
   contratos       contratos[]
   funcionarios    funcionarios[]
+
+  @@index([cidade], map: "idx_pessoas_cidade")
+  @@index([estado], map: "idx_pessoas_estado")
 }
 
 model produtos {
-  cd_produto    Int           @id(map: "PK__produtos__5D5AA9F3D9BF485F") @default(autoincrement())
+  cd_produto    Int           @id(map: "PK__produtos__5D5AA9F37CB55D4D") @default(autoincrement())
   cd_status     Int
   cd_fornecedor Int
   cd_modelo     Int
@@ -112,10 +126,14 @@ model produtos {
   fornecedores  fornecedores  @relation(fields: [cd_fornecedor], references: [cd_fornecedor], onUpdate: NoAction, map: "FK__produtos__cd_for__7849DB76")
   modelos       modelos       @relation(fields: [cd_modelo], references: [cd_modelo], onUpdate: NoAction, map: "FK__produtos__cd_mod__793DFFAF")
   status        status        @relation(fields: [cd_status], references: [cd_status], onUpdate: NoAction, map: "FK__produtos__cd_sta__7755B73D")
+
+  @@index([cd_produto], map: "idx_produtos_cd_produto")
 }
 
 model status {
-  cd_status   Int        @id(map: "PK__status__8FE978D286115D5E") @default(autoincrement())
+  cd_status   Int        @id(map: "PK__status__8FE978D23BD1120A") @default(autoincrement())
   nome_status String     @db.VarChar(20)
   produtos    produtos[]
+
+  @@index([nome_status], map: "idx_status_nome_status")
 }
