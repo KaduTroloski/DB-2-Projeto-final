@@ -1,7 +1,7 @@
 USE Projeto;
 GO
 
-WITH manutencoes_tecnicos_epson AS (
+WITH manutencoes_tecnicos_hp AS (
     SELECT 
         p.nome_pessoa AS nome_tecnico
     FROM manutencoes m
@@ -11,14 +11,14 @@ WITH manutencoes_tecnicos_epson AS (
     INNER JOIN modelos mo ON pr.cd_modelo = mo.cd_modelo
     INNER JOIN marcas ma ON mo.cd_marca = ma.cd_marca
     WHERE f.cargo = 'TÉCNICO'
-      AND ma.nome_marca = 'Epson'
+      AND ma.nome_marca = 'HP'
 )
 
 , total_por_tecnico AS (
     SELECT 
         nome_tecnico,
         COUNT(*) AS total_manutencoes
-    FROM manutencoes_tecnicos_epson
+    FROM manutencoes_tecnicos_hp
     GROUP BY nome_tecnico
 )
 
