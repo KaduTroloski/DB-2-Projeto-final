@@ -8,13 +8,13 @@ datasource db {
 }
 
 model cargos {
-  cd_cargo     Int            @id(map: "PK__cargos__00BD37AABB0BD717") @default(autoincrement())
+  cd_cargo     Int            @id(map: "PK__cargos__00BD37AAE3214B9D") @default(autoincrement())
   nome_cargo   String         @db.VarChar(20)
   funcionarios funcionarios[]
 }
 
 model contratos {
-  cd_contrato    Int          @id(map: "PK__contrato__7BA04FCDCE755840") @default(autoincrement())
+  cd_contrato    Int          @id(map: "PK__contrato__7BA04FCD9C0483C0") @default(autoincrement())
   data_inicio    DateTime     @db.Date
   data_fim       DateTime?    @db.Date
   data_vigencia  DateTime     @db.Date
@@ -32,9 +32,9 @@ model contratos {
 }
 
 model fornecedores {
-  cd_fornecedor Int        @id(map: "PK__forneced__F62AF30D64FC473A") @default(autoincrement())
+  cd_fornecedor Int        @id(map: "PK__forneced__F62AF30DBCF468E3") @default(autoincrement())
   razao_social  String?    @db.VarChar(100)
-  cnpj          String     @unique(map: "UQ__forneced__35BD3E48C2808C29") @db.VarChar(14)
+  cnpj          String     @unique(map: "UQ__forneced__35BD3E48AC36497F") @db.VarChar(14)
   telefone      String?    @db.Char(11)
   rua           String     @db.VarChar(100)
   numero        Int        @db.SmallInt
@@ -46,7 +46,7 @@ model fornecedores {
 }
 
 model funcionarios {
-  cd_funcionario Int           @id(map: "PK__funciona__8A599F2A6DA8AF9C") @default(autoincrement())
+  cd_funcionario Int           @id(map: "PK__funciona__8A599F2A822A3F07") @default(autoincrement())
   cd_pessoa      Int
   cd_cargo       Int
   contratos      contratos[]
@@ -56,7 +56,7 @@ model funcionarios {
 }
 
 model log_pessoa {
-  cd_log    Int      @id(map: "PK__log_pess__BAC211CD3E74AC76") @default(autoincrement())
+  cd_log    Int      @id(map: "PK__log_pess__BAC211CD071A0B01") @default(autoincrement())
   usuario   String?  @db.VarChar(100)
   acao      String?  @db.Char(1)
   descricao String?  @db.NVarChar(Max)
@@ -64,7 +64,7 @@ model log_pessoa {
 }
 
 model manutencoes {
-  cd_manutencao   Int          @id(map: "PK__manutenc__F2B8C5A08749B879") @default(autoincrement())
+  cd_manutencao   Int          @id(map: "PK__manutenc__F2B8C5A0E6A1822B") @default(autoincrement())
   cd_tecnico      Int
   cd_produto      Int
   data_manutencao DateTime     @db.Date
@@ -77,7 +77,7 @@ model manutencoes {
 }
 
 model marcas {
-  cd_marca   Int       @id(map: "PK__marcas__844C783C9FEB9A56") @default(autoincrement())
+  cd_marca   Int       @id(map: "PK__marcas__844C783CBD4C0DA5") @default(autoincrement())
   nome_marca String    @db.VarChar(50)
   modelos    modelos[]
 
@@ -85,7 +85,7 @@ model marcas {
 }
 
 model modelos {
-  cd_modelo   Int        @id(map: "PK__modelos__0BE8C3AB11002677") @default(autoincrement())
+  cd_modelo   Int        @id(map: "PK__modelos__0BE8C3AB4B79DB82") @default(autoincrement())
   nome_modelo String?    @db.VarChar(50)
   ano_modelo  Int?       @db.SmallInt
   cd_marca    Int
@@ -96,9 +96,9 @@ model modelos {
 }
 
 model pessoas {
-  cd_pessoa       Int            @id(map: "PK__pessoas__37A9313304F7C8A3") @default(autoincrement())
-  cpf             String         @unique(map: "UQ__pessoas__D836E71F9F796B8A") @db.Char(11)
-  nome_pessoa     String         @unique(map: "UQ__pessoas__BA250DE2805D2501") @db.VarChar(100)
+  cd_pessoa       Int            @id(map: "PK__pessoas__37A93133FEF1A2E3") @default(autoincrement())
+  cpf             String         @unique(map: "UQ__pessoas__D836E71F98322B6C") @db.Char(11)
+  nome_pessoa     String         @unique(map: "UQ__pessoas__BA250DE28DEF1EA6") @db.VarChar(100)
   data_nascimento DateTime       @db.Date
   sexo            String         @db.Char(1)
   email           String         @db.VarChar(35)
@@ -117,7 +117,7 @@ model pessoas {
 }
 
 model produtos {
-  cd_produto    Int           @id(map: "PK__produtos__5D5AA9F373E3A259") @default(autoincrement())
+  cd_produto    Int           @id(map: "PK__produtos__5D5AA9F33BDEDCE7") @default(autoincrement())
   cd_status     Int
   cd_fornecedor Int
   cd_modelo     Int
@@ -131,7 +131,7 @@ model produtos {
 }
 
 model status {
-  cd_status   Int        @id(map: "PK__status__8FE978D200F8C5C9") @default(autoincrement())
+  cd_status   Int        @id(map: "PK__status__8FE978D241928B45") @default(autoincrement())
   nome_status String     @db.VarChar(20)
   produtos    produtos[]
 

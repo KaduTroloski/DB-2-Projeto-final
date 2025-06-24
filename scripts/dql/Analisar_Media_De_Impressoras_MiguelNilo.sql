@@ -1,7 +1,3 @@
-CREATE NONCLUSTERED INDEX idx_data_inicio_produto
-ON contratos (data_inicio)
-INCLUDE (cd_produto);
-
 -- Define a data de corte (últimos 3 meses) -- 
 WITH ultimos_contratos AS (
     SELECT *
