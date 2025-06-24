@@ -105,7 +105,4 @@ Abaixo, segue os scripts SQL separados por tipo:
 `localhost:3001`
 
 ### Relatório Final
-O relatório final está disponível no arquivo [relatorio-final/template1.docx](relatorio/template1.docx).
-
-### Referências
-
+O relatório final está disponível no arquivo [RelatórioFinal_BancoDeDados2.docx](relatorio_final/RelatórioFinal_BancoDeDados2.docx).
