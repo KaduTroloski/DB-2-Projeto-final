@@ -16,10 +16,12 @@ Bianca Alves Fernandes -bianca-satc<br>
 
 ### Modelo Físico
 Utilizamos a ferramenta de modelagem de dados [dbdiagram.io](https://dbdiagram.io/) para criação do modelo físico do banco de dados, para posterior exportação dos scripts DDL das tabelas e relacionamentos.<br>
-Arquivo fonte: [Modelo Fisico](https://dbdiagram.io/d/DB-2_Modelo_Fisico-68473a6c57d78cbaf6a4ba27).<br>
-  
+Arquivo fonte: [Modelo Fisico]([https://dbdiagram.io/d/DB-2_Modelo_Fisico-68473a6c57d78cbaf6a4ba27](https://dbdiagram.io/d/Novo-Modelo_Fisico-684f03e43cc77757c8f46656)).<br>
+![image](https://github.com/user-attachments/assets/cf4ba266-25fa-4fea-ba7e-c42e2da4ba90)
+
 ### Dicionário de Dados
 
+As informações sobre as tabelas e índices foram documentados na planilha [Dicionário24062025.xlsx](dicionario_dados/Dicionário24062025.xlsx).
 
 ### Scripts SQL
 Para este projeto foi utilizado o banco de dados [Azure SQL](https://azure.microsoft.com/pt-br/products/azure-sql/database) <br>
