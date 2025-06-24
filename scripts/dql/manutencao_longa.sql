@@ -10,7 +10,8 @@ WITH manutencoes_tecnicos_hp AS (
     INNER JOIN produtos pr ON m.cd_produto = pr.cd_produto
     INNER JOIN modelos mo ON pr.cd_modelo = mo.cd_modelo
     INNER JOIN marcas ma ON mo.cd_marca = ma.cd_marca
-    WHERE f.cargo = 'TÉCNICO'
+	INNER JOIN cargos ca ON f.cd_cargo = ca.cd_cargo
+    WHERE ca.nome_cargo = 'Tecnico'
       AND ma.nome_marca = 'HP'
 )
 
