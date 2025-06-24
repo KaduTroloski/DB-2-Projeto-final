@@ -1,25 +1,29 @@
 USE Projeto;
 GO
 
-WITH manutencoes_epson_tecnicos AS (
+WITH manutencoes_tecnicos_epson AS (
     SELECT 
-        f.cd_funcionario,
-        p_tec.nome_pessoa AS nome_tecnico,
-        COUNT(*) AS total_manutencoes
+        p.nome_pessoa AS nome_tecnico
     FROM manutencoes m
-        INNER JOIN funcionarios f ON m.cd_tecnico = f.cd_funcionario
-        INNER JOIN pessoas p_tec ON f.cd_pessoa = p_tec.cd_pessoa
-        INNER JOIN produtos prod ON m.cd_produto = prod.cd_produto
-        INNER JOIN modelos mod ON prod.cd_modelo = mod.cd_modelo
-        INNER JOIN marcas mar ON mod.cd_marca = mar.cd_marca
-    WHERE 
-        f.cargo = 'TÉCNICO'
-        AND mar.nome_marca = 'Epson'
-    GROUP BY f.cd_funcionario, p_tec.nome_pessoa
+    INNER JOIN funcionarios f ON m.cd_tecnico = f.cd_funcionario
+    INNER JOIN pessoas p ON f.cd_pessoa = p.cd_pessoa
+    INNER JOIN produtos pr ON m.cd_produto = pr.cd_produto
+    INNER JOIN modelos mo ON pr.cd_modelo = mo.cd_modelo
+    INNER JOIN marcas ma ON mo.cd_marca = ma.cd_marca
+    WHERE f.cargo = 'TÉCNICO'
+      AND ma.nome_marca = 'Epson'
 )
 
-SELECT TOP 1 
+, total_por_tecnico AS (
+    SELECT 
+        nome_tecnico,
+        COUNT(*) AS total_manutencoes
+    FROM manutencoes_tecnicos_epson
+    GROUP BY nome_tecnico
+)
+
+SELECT 
     nome_tecnico,
     total_manutencoes
-FROM manutencoes_epson_tecnicos
+FROM total_por_tecnico
 ORDER BY total_manutencoes DESC;
