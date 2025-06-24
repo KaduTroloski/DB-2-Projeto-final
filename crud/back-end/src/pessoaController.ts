@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { pessoas,PrismaClient } from "@prisma/client";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 const prisma = new PrismaClient()
 
@@ -8,8 +9,13 @@ async function getPessoas(req: Request, res: Response) {
         const resul: pessoas[] = await prisma.pessoas.findMany()
         res.status(200).send(resul)
     } catch(err){
-        res.status(500).send({
-            Error: err
+       if(err instanceof PrismaClientKnownRequestError){
+            res.status(500).send({
+                Error: err.meta
+            })
+        }
+         res.status(500).send({
+                Error: err
         })
     }
 }
@@ -24,8 +30,13 @@ async function postPessoas(req: Request, res: Response){
         Pessoa_criada: newPessoa
     })
     } catch(err){
-        res.status(500).send({
-            Error: err
+        if(err instanceof PrismaClientKnownRequestError){
+            res.status(500).send({
+                Error: err.meta
+            })
+        }
+         res.status(500).send({
+                Error: err
         })
     }
 }
@@ -52,9 +63,14 @@ async function putPessoas(req: Request, res: Response) {
         });
         res.status(204).json({ message: "Pessoa atualizada com sucesso" });
     } catch (err) {
-        res.status(500).json({ 
-            error: err
-        });
+       if(err instanceof PrismaClientKnownRequestError){
+            res.status(500).send({
+                Error: err.meta
+            })
+        }
+         res.status(500).send({
+                Error: err
+        })
     }
 }
 
@@ -74,9 +90,14 @@ async function deletePessoa(req: Request, res: Response) {
         await prisma.$executeRawUnsafe(sql)
         res.status(204).json({ message: "Pessoa deletada com sucesso" });
     } catch (err) {
-        res.status(500).json({ 
-            error: err
-         });
+       if(err instanceof PrismaClientKnownRequestError){
+            res.status(500).send({
+                Error: err.meta
+            })
+        }
+         res.status(500).send({
+                Error: err
+        })
     }
 }
 

@@ -7,7 +7,8 @@ export default function DeleteModalContent({ selectedPerson, handleCloseModal })
       alert('Pessoa excluída com sucesso');
       window.location.reload();
     } catch (e) {
-      alert('Erro ao excluir pessoa');
+      console.log(e)
+      alert(e.response.data.Error.message);
     }
   }
   return (

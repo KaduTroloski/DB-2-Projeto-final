@@ -38,7 +38,7 @@ export default function PeopleForm({isEditing, selectedPerson, handleCloseModal}
       alert("Pessoa salva com sucesso");
       window.location.reload();
     } catch (e) {
-      alert("Erro ao salvar pessoa " + e.message);
+      alert("Erro ao salvar pessoa " + e.response.data.Error.message);
     }
   }
   return (

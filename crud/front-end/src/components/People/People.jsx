@@ -35,7 +35,7 @@ export default function People() {
         const peopleData = await getPeople();
         setPeople(peopleData);
       } catch (error) {
-        alert(error.message);
+        alert(e.response.data.Error.message);
       }
     };
     void fetchPeople();
