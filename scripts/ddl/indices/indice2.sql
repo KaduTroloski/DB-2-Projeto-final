@@ -1,7 +1,7 @@
 -- Índice para acelerar filtros por data de manutenção
 CREATE INDEX IF NOT EXISTS idx_manutencoes_data_manutencao
 ON manutencoes (data_manutencao);
-Yyhb
+
 -- Índice para acelerar filtros por cidade do cliente
 CREATE INDEX IF NOT EXISTS idx_pessoas_cidade
 ON pessoas (cidade);
