@@ -674,10 +674,3 @@ CREATE INDEX idx_status_nome_status
 ON status (nome_status);
 END;
 GO
-
-IF NOT EXISTS(SELECT name FROM sys.indexes WHERE object_id = OBJECT_ID('contratos') AND type_desc = 'NONCLUSTERED' AND name = 'idx_data_inicio_contrato')
-BEGIN
-CREATE INDEX idx_data_inicio_contrato
-ON contratos(data_inicio);
-END;
-GO
